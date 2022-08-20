@@ -1,0 +1,18 @@
+name: CloudBridge
+author: BedrockCloud
+api: 5.0.0
+main: bedrockcloud\cloudbridge\CloudBridge
+version: 2.0.0
+load: STARTUP
+description: CloudBridge plugin for BedrockCloud.
+authors:
+  - xxFLORII
+  - BauboLP
+
+permissions:
+  cloud.admin:
+    default: op
+    description: "Cloud permission"
+  cloud.notify:
+    default: op
+    description: "Cloud permission"
