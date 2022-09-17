@@ -59,7 +59,7 @@ class DataPacket
      * @return false|string
      */
     public function encode() {
-        $this->data["packetName"] = $this->getPacketName();
+        $this->addValue("packetName", $this->getPacketName());
         return json_encode($this->data);
     }
 

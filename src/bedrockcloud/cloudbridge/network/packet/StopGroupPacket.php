@@ -12,5 +12,4 @@ class StopGroupPacket extends DataPacket
     {
         return "StopGroupPacket";
     }
-
 }

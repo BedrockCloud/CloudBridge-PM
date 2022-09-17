@@ -21,6 +21,7 @@ class UpdateGameServerInfoPacket extends DataPacket
 
     public function encode()
     {
+        $this->addValue("packetName", $this->getPacketName());
         $this->addValue("type",$this->type);
         $this->addValue("value", $this->value);
         return parent::encode();

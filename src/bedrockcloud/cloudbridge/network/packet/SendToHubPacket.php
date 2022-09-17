@@ -16,6 +16,7 @@ class SendToHubPacket extends DataPacket
 
     public function encode()
     {
+        $this->addValue("packetName", $this->getPacketName());
         $this->addValue("playerName", $this->playerName);
         return parent::encode();
     }

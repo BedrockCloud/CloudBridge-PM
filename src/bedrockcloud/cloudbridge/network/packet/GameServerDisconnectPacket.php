@@ -18,6 +18,7 @@ class GameServerDisconnectPacket extends DataPacket{
 
     public function encode()
     {
+        $this->addValue("packetName", $this->getPacketName());
         $this->addValue("serverName", $this->serverName);
         return parent::encode();
     }

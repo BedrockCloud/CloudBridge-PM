@@ -15,6 +15,7 @@ class KeepALivePacket extends DataPacket
     public function handle()
     {
         $pk = $this;
+        $pk->addValue("packetName", $this->getPacketName());
         $pk->addValue("serverName", CloudBridge::getInstance()->getServer()->getMotd());
         $this->sendPacket();
     }
