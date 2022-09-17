@@ -19,6 +19,7 @@ class DataPacket
     public function __construct()
     {
         $this->addValue("serverName", $this->getServerName());
+        $this->addValue("isPrivate", CloudBridge::getInstance()->getIsPrivate());
     }
 
     /**

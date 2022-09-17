@@ -73,7 +73,6 @@ class CloudBridge extends PluginBase
     public function onLoad(): void
     {
         self::$instance = $this;
-        $this->getScheduler()->scheduleRepeatingTask(new RequestTask(), 1);
     }
 
     public function onEnable(): void
@@ -259,6 +258,10 @@ class CloudBridge extends PluginBase
 
     public function getCloudPath(): string {
         return $this->getServerProperties()->get("cloud-path");
+    }
+
+    public function getIsPrivate(): string {
+        return $this->getServerProperties()->get("is-private");
     }
 
     public function getServerProperties(): Config {

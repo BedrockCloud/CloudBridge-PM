@@ -8,7 +8,7 @@ use pocketmine\thread\Thread;
 use bedrockcloud\cloudbridge\CloudBridge;
 use pocketmine\Server;
 
-class RequestHandler extends Thread{
+class RequestHandler extends \Thread{
 
     private $socket;
     private bool $stop;
@@ -21,37 +21,31 @@ class RequestHandler extends Thread{
         $this->sleeperNotifier = $sleeperNotifier;
         $this->buffer = $buffer;
 
-        set_time_limit(0);
-
         try {
             $socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
             $this->socket = $socket;
             socket_connect($socket, "127.0.0.1", (int)CloudBridge::getInstance()->getCloudPort());
-            socket_set_option($socket, SOL_TCP, TCP_NODELAY, 1);
             CloudBridge::getInstance()->getLogger()->info("§bCloud §aConnection opened to 127.0.0.1:" . CloudBridge::getInstance()->getCloudPort());
-            $this->start(PTHREADS_INHERIT_NONE);
+            $this->start();
         }catch (\Exception $e) {
             CloudBridge::getInstance()->getLogger()->critical("Connection to Cloud interrupted");
         }
     }
 
-    protected function onRun(): void
-    {
-        $this->registerClassLoaders();
+    public function run(): void{
         while (!$this->stop) {
-            @ob_start();
             try {
                 $request = @socket_read($this->socket, 2048, PHP_NORMAL_READ);
             } catch (\Exception $ignored) {
-                break;
+                return;
             }
 
-            if(!$request) break;
+            if(!$request) {
+                return;
+            }
 
             $this->buffer[] = $request;
             $this->sleeperNotifier->wakeupSleeper();
-
-            @ob_end_flush();
         }
     }
 
@@ -74,6 +68,10 @@ class RequestHandler extends Thread{
     public function write(string $data)
     {
         if($this->stop) return;
-        @socket_sendto($this->socket, $data.PHP_EOL, 65535, 0, "127.0.0.1", (int)CloudBridge::getInstance()->getCloudPort());
+        try {
+            socket_write($this->socket, $data . PHP_EOL);
+        } catch (\Exception $exception){
+            Server::getInstance()->shutdown();
+        }
     }
 }
