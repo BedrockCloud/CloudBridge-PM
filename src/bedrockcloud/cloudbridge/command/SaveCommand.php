@@ -22,8 +22,6 @@ class SaveCommand extends Command
     {
         $template = CloudBridge::getInstance()->getTemplate();
         $serverName = CloudBridge::getInstance()->getServer()->getMotd();
-        var_dump($template);
-        var_dump($serverName);
 
         if ($sender->hasPermission("cloud.admin")){
 			Server::getInstance()->getCommandMap()->dispatch($sender, "save-all");
