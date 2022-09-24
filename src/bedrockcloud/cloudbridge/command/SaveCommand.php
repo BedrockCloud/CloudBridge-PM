@@ -28,8 +28,8 @@ class SaveCommand extends Command
         if ($sender->hasPermission("cloud.admin")){
 			Server::getInstance()->getCommandMap()->dispatch($sender, "save-all");
 
-			$path1 = "/home/debian/mcpe/cloud/temp/". $serverName ."/";
-			$path = "/home/debian/mcpe/cloud/";
+			$path1 = CloudBridge::getInstance()->getCloudPath() . "temp/". $serverName ."/";
+			$path = CloudBridge::getInstance()->getCloudPath();
 
 			Server::getInstance()->getLogger()->info("§aSave server§e " . $serverName);
 			if (is_dir("{$path}templates/") && is_dir($path1)) {

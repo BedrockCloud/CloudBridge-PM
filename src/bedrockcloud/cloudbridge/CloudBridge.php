@@ -260,10 +260,6 @@ class CloudBridge extends PluginBase
         return $this->getServerProperties()->get("cloud-path");
     }
 
-    public function getIsPrivate(): string {
-        return $this->getServerProperties()->get("is-private");
-    }
-
     public function getServerProperties(): Config {
         return new Config(Server::getInstance()->getDataPath() . "server.properties", 0);
     }

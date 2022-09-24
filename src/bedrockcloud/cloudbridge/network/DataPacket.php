@@ -2,6 +2,7 @@
 
 namespace bedrockcloud\cloudbridge\network;
 
+use bedrockcloud\cloudbridge\api\PrivateServerAPI;
 use bedrockcloud\cloudbridge\CloudBridge;
 
 class DataPacket
@@ -19,7 +20,7 @@ class DataPacket
     public function __construct()
     {
         $this->addValue("serverName", $this->getServerName());
-        $this->addValue("isPrivate", CloudBridge::getInstance()->getIsPrivate());
+        $this->addValue("isPrivate", PrivateServerAPI::getIsPrivate());
     }
 
     /**
