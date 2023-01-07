@@ -20,7 +20,7 @@ class DataPacket
     public function __construct()
     {
         $this->addValue("serverName", $this->getServerName());
-        $this->addValue("isPrivate", PrivateServerAPI::getIsPrivate());
+        $this->addValue("isPrivate", '"'.PrivateServerAPI::getIsPrivate().'"');
     }
 
     /**
