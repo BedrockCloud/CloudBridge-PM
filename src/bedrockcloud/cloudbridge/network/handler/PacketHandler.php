@@ -52,7 +52,7 @@ class PacketHandler
 
     public static function handleCloudPacket(string $packetBuffer){
         $data = json_decode($packetBuffer, true);
-        if (empty($data["packetName"]) || !self::isRegistered($data["packetName"])) return;
+        if (empty($data["packetName"]) || !self::isRegistered($data["packetName"]) || is_null($data)) return;
         $packet = self::getPacketClassByName($data["packetName"]);
         if ($packet instanceof DataPacket) {
             $packet->data = $data;

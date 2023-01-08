@@ -62,7 +62,6 @@ class CloudBridge extends PluginBase
     public static ?Config $config;
 
     private static CloudBridge $instance;
-    public static array $qeueuPlayer = [];
 
     /** @var GameServer[] */
     public static array $gameServer = [];
@@ -110,6 +109,7 @@ class CloudBridge extends PluginBase
                 $gameServer->setIsPrivate($dataPacket->isPrivate());
                 $gameServer->setPlayerCount($dataPacket->getPlayerCount());
                 self::$gameServer[$dataPacket->getServerInfoName()] = $gameServer;
+                Server::getInstance()->getLogger()->info("Registered gameserver.");
             }
         });
         $this->getScheduler()->scheduleRepeatingTask(new class extends Task{
@@ -153,14 +153,16 @@ class CloudBridge extends PluginBase
 
     public function onDisable(): void
     {
-        $pk = new GameServerDisconnectPacket();
-        $pk->serverName = self::getGameServer()->getName();
-        $pk->sendPacket();
+        try {
+            $pk = new GameServerDisconnectPacket();
+            $pk->serverName = self::getGameServer()->getName();
+            $pk->sendPacket();
+        } catch (\ErrorException $ignored){}
         foreach (Server::getInstance()->getOnlinePlayers() as $player) {
             $player->kick("Server was closed");
         }
         $this->checkNewCrashDump();
-        self::$requestHandler->stop(true);
+        self::$requestHandler->stop();
     }
 
     /**

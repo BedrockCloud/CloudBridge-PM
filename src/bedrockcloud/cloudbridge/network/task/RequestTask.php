@@ -9,5 +9,6 @@ use pocketmine\scheduler\Task;
 class RequestTask extends Task
 {
 
-    public function onRun(): void{}
+    public function onRun(): void{
+    }
 }
