@@ -1,0 +1,17 @@
+{
+  "name": "bedrockcloud/cloudbridge",
+  "description": "CloudBridge for BedrockCloud",
+  "authors": [
+    {
+      "name": "xxFLORII"
+    }
+  ],
+  "license": "GPL-2.0-or-later",
+  "require": {
+    "ext-pmmpthread": "*",
+    "ext-sockets": "*"
+  },
+  "require-dev": {
+    "pocketmine/pocketmine-mp": "^5.0"
+  }
+}
