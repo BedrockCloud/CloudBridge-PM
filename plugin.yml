@@ -6,7 +6,7 @@ version: 1.0.0
 load: STARTUP
 description: CloudBridge plugin for BedrockCloud.
 authors:
-  - BedrockCloud
+  - xxFLORII
 
 permissions:
   cloud.admin:
