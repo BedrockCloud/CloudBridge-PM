@@ -32,11 +32,6 @@ class PlayerJoinListener implements Listener
             $pk->sendPacket();
         }
 
-        if (CloudAPI::getInstance()->getCurrentServer()->isBeta()){
-            $event->getPlayer()->sendMessage(CloudBridge::getPrefix() . "§cThis server is currently in §l§6BETA MODE§r§8." . PHP_EOL .
-            "§4There may be errors or it may be that some things have not yet been translated§8.");
-        }
-
         if ($player->hasPermission("cloud.notify")){
             if (!is_file(CloudAPI::getInstance()->getCloudPath() . "local/notify/{$player->getName()}.json")){
                 $notifyFile = new Config(CloudAPI::getInstance()->getCloudPath() . "local/notify/{$player->getName()}.json", Config::JSON);
