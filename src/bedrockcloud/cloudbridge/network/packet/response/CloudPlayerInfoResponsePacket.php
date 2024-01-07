@@ -28,4 +28,52 @@ class CloudPlayerInfoResponsePacket extends RequestPacket {
             $this->xuid = $this->data["xuid"];
         }
     }
+
+    /**
+     * @return bool
+     */
+    public function isSuccess(): bool
+    {
+        return $this->success;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAddress(): string
+    {
+        return $this->address;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCurrentServer(): string
+    {
+        return $this->currentServer;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCurrentProxy(): string
+    {
+        return $this->currentProxy;
+    }
+
+    /**
+     * @return string
+     */
+    public function getXuid(): string
+    {
+        return $this->xuid;
+    }
 }
