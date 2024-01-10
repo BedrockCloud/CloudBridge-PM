@@ -4,14 +4,13 @@ namespace bedrockcloud\cloudbridge\network\packet\response;
 
 use bedrockcloud\cloudbridge\network\RequestPacket;
 
-class GameServerInfoResponsePacket extends RequestPacket
+class CloudServerInfoResponsePacket extends RequestPacket
 {
 
     private string $serverInfoName;
     private string $templateName;
     private int $state;
     private bool $isLobby;
-    private bool $isPrivate;
     private bool $isBeta;
     private bool $isMaintenance;
     private bool $isStatic;
@@ -21,7 +20,7 @@ class GameServerInfoResponsePacket extends RequestPacket
 
     public function getPacketName(): string
     {
-        return "GameServerInfoResponsePacket";
+        return "CloudServerInfoResponsePacket";
     }
 
     public function handle()
@@ -30,7 +29,6 @@ class GameServerInfoResponsePacket extends RequestPacket
         $this->templateName = $this->data["templateName"];
         $this->state = $this->data["state"];
         $this->isLobby = $this->data["isLobby"];
-        $this->isPrivate = $this->data["isPrivate"];
         $this->isBeta = $this->data["isBeta"];
         $this->isMaintenance = $this->data["isMaintenance"];
         $this->isStatic = $this->data["isStatic"];
@@ -77,14 +75,6 @@ class GameServerInfoResponsePacket extends RequestPacket
     public function getTemplateName(): string
     {
         return $this->templateName;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isPrivate(): bool
-    {
-        return $this->isPrivate;
     }
 
     /**

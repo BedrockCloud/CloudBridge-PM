@@ -6,7 +6,7 @@ use bedrockcloud\cloudbridge\api\CloudAPI;
 use bedrockcloud\cloudbridge\CloudBridge;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
-use bedrockcloud\cloudbridge\objects\GameServerState;
+use bedrockcloud\cloudbridge\objects\CloudServerState;
 
 class ServerInfoCommand extends Command
 {
@@ -23,18 +23,18 @@ class ServerInfoCommand extends Command
             $sender->sendMessage(
                 "§7---------------§r" . PHP_EOL .
                 "ServerName: " . CloudAPI::getInstance()->getCurrentServer()->getName() . PHP_EOL .
-                "TemplateName: " . CloudAPI::getInstance()->getCurrentServer()->getCloudGroup()->getName() . PHP_EOL .
-                "Mode: " . GameServerState::intToString(CloudAPI::getInstance()->getCurrentServer()->getState()) . PHP_EOL .
+                "TemplateName: " . CloudAPI::getInstance()->getCurrentServer()->getTemplate()->getName() . PHP_EOL .
+                "Mode: " . CloudServerState::intToString(CloudAPI::getInstance()->getCurrentServer()->getState()) . PHP_EOL .
                 "§rPlayers: " . CloudAPI::getInstance()->getCurrentServer()->getPlayerCount() . PHP_EOL .
                 "§7---------------§r"
             );
         } else {
-            if (($gameServer = CloudAPI::getInstance()->getGameServer($args[0])) != null){
+            if (($gameServer = CloudAPI::getInstance()->getServer($args[0])) != null){
                 $sender->sendMessage(
                     "§7---------------§r" . PHP_EOL .
                     "ServerName: " . $gameServer->getName() . PHP_EOL .
-                    "TemplateName: " . $gameServer->getCloudGroup()->getName() . PHP_EOL .
-                    "Mode: " . GameServerState::intToString($gameServer->getState()) . PHP_EOL .
+                    "TemplateName: " . $gameServer->getTemplate()->getName() . PHP_EOL .
+                    "Mode: " . CloudServerState::intToString($gameServer->getState()) . PHP_EOL .
                     "§rPlayers: " . $gameServer->getPlayerCount() . PHP_EOL .
                     "§7---------------§r"
                 );

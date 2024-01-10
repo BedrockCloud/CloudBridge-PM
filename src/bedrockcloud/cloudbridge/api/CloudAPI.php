@@ -4,7 +4,7 @@ namespace bedrockcloud\cloudbridge\api;
 
 use bedrockcloud\cloudbridge\CloudBridge;
 use bedrockcloud\cloudbridge\objects\CloudTemplate;
-use bedrockcloud\cloudbridge\objects\GameServer;
+use bedrockcloud\cloudbridge\objects\CloudServer;
 use bedrockcloud\cloudbridge\objects\VersionInfo;
 use pocketmine\Server;
 use pocketmine\utils\Config;
@@ -22,20 +22,20 @@ class CloudAPI {
     }
 
     /**
-     * @return GameServer|null
+     * @return CloudServer|null
      */
-    public function getCurrentServer(): ?GameServer
+    public function getCurrentServer(): ?CloudServer
     {
-        return CloudBridge::$gameServer[Server::getInstance()->getMotd()] ?? null;
+        return CloudBridge::$cloudServer[Server::getInstance()->getMotd()] ?? null;
     }
 
     /**
      * @param string $server
-     * @return GameServer|null
+     * @return CloudServer|null
      */
-    public function getGameServer(string $server): ?GameServer
+    public function getServer(string $server): ?CloudServer
     {
-        return CloudBridge::$gameServer[$server] ?? null;
+        return CloudBridge::$cloudServer[$server] ?? null;
     }
 
     /**
@@ -72,10 +72,10 @@ class CloudAPI {
     }
 
     /**
-     * @return GameServer[]
+     * @return CloudServer[]
      */
     public function getGameServers(): array{
-        return CloudBridge::$gameServer;
+        return CloudBridge::$cloudServer;
     }
 
     /**

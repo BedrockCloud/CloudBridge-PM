@@ -12,10 +12,12 @@ class TemplateInfoResponsePacket extends RequestPacket
     private bool $isBeta;
     private bool $isMaintenance;
     private int $maxPlayer;
+    private bool $isStatic;
+    private int $type;
 
     public function getPacketName(): string
     {
-        return "GameServerInfoResponsePacket";
+        return "CloudServerInfoResponsePacket";
     }
 
     public function handle()
@@ -26,6 +28,8 @@ class TemplateInfoResponsePacket extends RequestPacket
         $this->isBeta = $this->data["isBeta"];
         $this->isMaintenance = $this->data["isMaintenance"];
         $this->maxPlayer = $this->data["maxPlayer"];
+        $this->isStatic = $this->data["isStatic"];
+        $this->type = $this->data["type"];
     }
 
     /**
@@ -74,5 +78,21 @@ class TemplateInfoResponsePacket extends RequestPacket
     public function isMaintenance(): bool
     {
         return $this->isMaintenance;
+    }
+
+    /**
+     * @return int
+     */
+    public function getType(): int
+    {
+        return $this->type;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isStatic(): bool
+    {
+        return $this->isStatic;
     }
 }

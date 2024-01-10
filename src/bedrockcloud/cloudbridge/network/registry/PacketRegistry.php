@@ -12,13 +12,13 @@ use bedrockcloud\cloudbridge\network\packet\PlayerMovePacket;
 use bedrockcloud\cloudbridge\network\packet\proxy\ProxyPlayerJoinPacket;
 use bedrockcloud\cloudbridge\network\packet\proxy\ProxyPlayerQuitPacket;
 use bedrockcloud\cloudbridge\network\packet\request\CloudPlayerInfoRequestPacket;
-use bedrockcloud\cloudbridge\network\packet\request\GameServerInfoRequestPacket;
+use bedrockcloud\cloudbridge\network\packet\request\CloudServerInfoRequestPacket;
 use bedrockcloud\cloudbridge\network\packet\request\ListCloudPlayersRequestPacket;
 use bedrockcloud\cloudbridge\network\packet\request\ListServerRequestPacket;
 use bedrockcloud\cloudbridge\network\packet\request\ListTemplatesRequestPacket;
 use bedrockcloud\cloudbridge\network\packet\request\TemplateInfoRequestPacket;
 use bedrockcloud\cloudbridge\network\packet\response\CloudPlayerInfoResponsePacket;
-use bedrockcloud\cloudbridge\network\packet\response\GameServerInfoResponsePacket;
+use bedrockcloud\cloudbridge\network\packet\response\CloudServerInfoResponsePacket;
 use bedrockcloud\cloudbridge\network\packet\response\ListCloudPlayersResponsePacket;
 use bedrockcloud\cloudbridge\network\packet\response\ListServerResponsePacket;
 use bedrockcloud\cloudbridge\network\packet\response\ListTemplatesResponsePacket;
@@ -38,8 +38,8 @@ class PacketRegistry {
         $packets = [
             GameServerConnectPacket::class,
             GameServerDisconnectPacket::class,
-            GameServerInfoRequestPacket::class,
-            GameServerInfoResponsePacket::class,
+            CloudServerInfoRequestPacket::class,
+            CloudServerInfoResponsePacket::class,
             ListServerRequestPacket::class,
             ListServerResponsePacket::class,
             ProxyPlayerJoinPacket::class,

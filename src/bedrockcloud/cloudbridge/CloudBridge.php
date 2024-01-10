@@ -14,20 +14,18 @@ use bedrockcloud\cloudbridge\network\handler\PacketHandler;
 use bedrockcloud\cloudbridge\network\handler\RequestHandler;
 use bedrockcloud\cloudbridge\network\packet\GameServerConnectPacket;
 use bedrockcloud\cloudbridge\network\packet\GameServerDisconnectPacket;
-use bedrockcloud\cloudbridge\network\packet\request\GameServerInfoRequestPacket;
+use bedrockcloud\cloudbridge\network\packet\request\CloudServerInfoRequestPacket;
 use bedrockcloud\cloudbridge\network\packet\request\TemplateInfoRequestPacket;
-use bedrockcloud\cloudbridge\network\packet\response\GameServerInfoResponsePacket;
+use bedrockcloud\cloudbridge\network\packet\response\CloudServerInfoResponsePacket;
 use bedrockcloud\cloudbridge\network\packet\response\TemplateInfoResponsePacket;
 use bedrockcloud\cloudbridge\network\registry\PacketRegistry;
-use bedrockcloud\cloudbridge\objects\CloudGroup;
 use bedrockcloud\cloudbridge\objects\CloudTemplate;
-use bedrockcloud\cloudbridge\objects\GameServer;
-use bedrockcloud\cloudbridge\objects\GameServerState;
+use bedrockcloud\cloudbridge\objects\CloudServer;
+use bedrockcloud\cloudbridge\objects\CloudServerState;
 use bedrockcloud\cloudbridge\objects\VersionInfo;
 use bedrockcloud\cloudbridge\utils\Utils;
 use pmmp\thread\ThreadSafeArray;
 use pocketmine\plugin\PluginBase;
-use pocketmine\scheduler\TaskHandler;
 use pocketmine\Server;
 use pocketmine\utils\Config;
 use pocketmine\utils\SingletonTrait;
@@ -46,8 +44,8 @@ class CloudBridge extends PluginBase{
     public static array $requests = [];
     public array $queue = [];
 
-    /** @var GameServer[] */
-    public static array $gameServer = [];
+    /** @var CloudServer[] */
+    public static array $cloudServer = [];
     /** @var CloudTemplate[] */
     public static array $cloudTemplates = [];
     public static VersionInfo $versionInfo;
@@ -90,24 +88,26 @@ class CloudBridge extends PluginBase{
         $pk->addValue("serverPort", $this->getServer()->getPort());
         $pk->addValue("serverPid", getmypid());
         $pk->sendPacket();
-        $serverInfoPacket = new GameServerInfoRequestPacket();
-        $serverInfoPacket->server = Server::getInstance()->getMotd();
-        $serverInfoPacket->submitRequest($serverInfoPacket, function (DataPacket $dataPacket) {
-            if($dataPacket instanceof GameServerInfoResponsePacket) {
-                $gameServer = new GameServer($dataPacket->getServerInfoName(), new CloudGroup($dataPacket->getTemplateName(), $dataPacket->isMaintenance(), $dataPacket->isBeta(), $dataPacket->isLobby(), $dataPacket->getMaxPlayer(), $dataPacket->getState(), $dataPacket->isStatic()));
-                $gameServer->setState(GameServerState::LOBBY, false);
-                $gameServer->setPlayerCount($dataPacket->getPlayerCount());
-                self::$gameServer[$dataPacket->getServerInfoName()] = $gameServer;
-            }
-        });
 
         $templateinfopacket = new TemplateInfoRequestPacket();
         $templateinfopacket->server = Server::getInstance()->getMotd();
         $templateinfopacket->submitRequest($templateinfopacket, function (DataPacket $dataPacket){
             if($dataPacket instanceof TemplateInfoResponsePacket) {
-                $template = new CloudTemplate($dataPacket->getTemplateName(), $dataPacket->isMaintenance(), $dataPacket->isBeta(), $dataPacket->isLobby(), $dataPacket->getMaxPlayer());
-                $template->setIsPrivate($dataPacket->isPrivate());
-                self::$cloudTemplates[$dataPacket->getTemplateName()] = $template;
+                $template = new CloudTemplate($dataPacket->getTemplateName(), $dataPacket->isMaintenance(), $dataPacket->isBeta(), $dataPacket->isLobby(), $dataPacket->getMaxPlayer(), $dataPacket->isStatic(), $dataPacket->getType());
+                CloudBridge::$cloudTemplates[$dataPacket->getTemplateName()] = $template;
+
+                $serverInfoPacket = new CloudServerInfoRequestPacket();
+                $serverInfoPacket->server = Server::getInstance()->getMotd();
+                $serverInfoPacket->submitRequest($serverInfoPacket, function (DataPacket $pk) use ($template, $dataPacket) {
+                    if ($pk instanceof CloudServerInfoResponsePacket) {
+                        if ($pk->getTemplateName() === $dataPacket->getTemplateName()) {
+                            $cloudServer = new CloudServer($pk->getServerInfoName(), $template);
+                            $cloudServer->setState(CloudServerState::LOBBY, false);
+                            $cloudServer->setPlayerCount($pk->getPlayerCount());
+                            CloudBridge::$cloudServer[$pk->getServerInfoName()] = $cloudServer;
+                        }
+                    }
+                });
             }
         });
 

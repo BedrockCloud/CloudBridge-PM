@@ -6,26 +6,26 @@ use pocketmine\Server;
 use bedrockcloud\cloudbridge\network\packet\StartServerPacket;
 use bedrockcloud\cloudbridge\network\packet\UpdateGameServerInfoPacket;
 
-class GameServer
+class CloudServer
 {
 
     private string $name;
-    private CloudGroup $cloudGroup;
+    private CloudTemplate $cloudTemplate;
     private int $state;
     private int $playerCount;
     private bool $isMaintenance;
     private bool $isBeta;
     private bool $isStatic;
 
-    public function __construct(String $name, CloudGroup $cloudGroup)
+    public function __construct(String $name, CloudTemplate $cloudTemplate)
     {
         $this->name = $name;
-        $this->cloudGroup = $cloudGroup;
-        $this->state = $cloudGroup->getState();
-        $this->isMaintenance = $cloudGroup->isMaintenance();
-        $this->isBeta = $cloudGroup->isBeta();
+        $this->cloudTemplate = $cloudTemplate;
+        $this->state = $cloudTemplate->getState();
+        $this->isMaintenance = $cloudTemplate->isMaintenance();
+        $this->isBeta = $cloudTemplate->isBeta();
         $this->playerCount = 0;
-        $this->isStatic = $cloudGroup->isStatic();
+        $this->isStatic = $cloudTemplate->isStatic();
     }
 
     public function getName(): string
@@ -33,9 +33,9 @@ class GameServer
         return $this->name;
     }
 
-    public function getCloudGroup(): CloudGroup
+    public function getTemplate(): CloudTemplate
     {
-        return $this->cloudGroup;
+        return $this->cloudTemplate;
     }
 
     /**
@@ -63,7 +63,7 @@ class GameServer
     {
         $this->state = $state;
         if ($startNewServer){
-            $group = $this->cloudGroup->getName();
+            $group = $this->cloudTemplate->getName();
             $count = 1;
             $pk = new StartServerPacket();
             $pk->addValue("groupName", $group);
@@ -112,5 +112,11 @@ class GameServer
         $this->playerCount = $playerCount;
     }
 
-
+    /**
+     * @return bool
+     */
+    public function isStatic(): bool
+    {
+        return $this->isStatic;
+    }
 }

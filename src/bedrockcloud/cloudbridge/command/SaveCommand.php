@@ -17,7 +17,7 @@ class SaveCommand extends Command
 
     public function __construct()
     {
-        parent::__construct("save", "Save GameServer");
+        parent::__construct("save", "Save CloudServer");
         $this->setPermission("cloud.admin");
     }
 

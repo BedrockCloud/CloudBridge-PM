@@ -2,7 +2,7 @@
 
 namespace bedrockcloud\cloudbridge\objects;
 
-class GameServerState
+class CloudServerState
 {
 
     public const NOT_REGISTERED = -1;

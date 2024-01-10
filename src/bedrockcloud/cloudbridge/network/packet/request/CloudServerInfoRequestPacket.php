@@ -4,13 +4,13 @@ namespace bedrockcloud\cloudbridge\network\packet\request;
 
 use bedrockcloud\cloudbridge\network\RequestPacket;
 
-class GameServerInfoRequestPacket extends RequestPacket {
+class CloudServerInfoRequestPacket extends RequestPacket {
 
     public ?string $server = null;
 
     public function getPacketName(): string
     {
-        return "GameServerInfoRequestPacket";
+        return "CloudServerInfoRequestPacket";
     }
 
     public function encode()
