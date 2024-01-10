@@ -12,7 +12,6 @@ class GameServer
     private string $name;
     private CloudGroup $cloudGroup;
     private int $state;
-    public bool $isPrivate;
     private int $playerCount;
     private bool $isMaintenance;
     private bool $isBeta;
@@ -23,7 +22,6 @@ class GameServer
         $this->name = $name;
         $this->cloudGroup = $cloudGroup;
         $this->state = $cloudGroup->getState();
-        $this->isPrivate = $cloudGroup->getIsPrivate();
         $this->isMaintenance = $cloudGroup->isMaintenance();
         $this->isBeta = $cloudGroup->isBeta();
         $this->playerCount = 0;
@@ -82,16 +80,6 @@ class GameServer
 
     public function setServerState(int $state){
         $this->state = $state;
-    }
-
-    public function setIsPrivate(bool $isPrivate): void
-    {
-        $this->isPrivate = $isPrivate;
-    }
-
-    public function isPrivate(): bool
-    {
-        return $this->isPrivate;
     }
 
 

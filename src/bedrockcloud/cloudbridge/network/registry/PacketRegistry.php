@@ -25,7 +25,6 @@ use bedrockcloud\cloudbridge\network\packet\response\ListTemplatesResponsePacket
 use bedrockcloud\cloudbridge\network\packet\response\TemplateInfoResponsePacket;
 use bedrockcloud\cloudbridge\network\packet\SendToHubPacket;
 use bedrockcloud\cloudbridge\network\packet\StartGroupPacket;
-use bedrockcloud\cloudbridge\network\packet\StartPrivateServerPacket;
 use bedrockcloud\cloudbridge\network\packet\StartServerPacket;
 use bedrockcloud\cloudbridge\network\packet\StopGroupPacket;
 use bedrockcloud\cloudbridge\network\packet\StopServerPacket;
@@ -59,7 +58,6 @@ class PacketRegistry {
             SendToHubPacket::class,
             ListTemplatesRequestPacket::class,
             ListTemplatesResponsePacket::class,
-            StartPrivateServerPacket::class,
             TemplateInfoRequestPacket::class,
             TemplateInfoResponsePacket::class,
             CloudPlayerInfoRequestPacket::class,

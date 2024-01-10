@@ -96,7 +96,6 @@ class CloudBridge extends PluginBase{
             if($dataPacket instanceof GameServerInfoResponsePacket) {
                 $gameServer = new GameServer($dataPacket->getServerInfoName(), new CloudGroup($dataPacket->getTemplateName(), $dataPacket->isMaintenance(), $dataPacket->isBeta(), $dataPacket->isLobby(), $dataPacket->getMaxPlayer(), $dataPacket->getState(), $dataPacket->isStatic()));
                 $gameServer->setState(GameServerState::LOBBY, false);
-                $gameServer->setIsPrivate($dataPacket->isPrivate());
                 $gameServer->setPlayerCount($dataPacket->getPlayerCount());
                 self::$gameServer[$dataPacket->getServerInfoName()] = $gameServer;
             }

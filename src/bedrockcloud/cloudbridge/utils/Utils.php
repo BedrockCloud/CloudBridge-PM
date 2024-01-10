@@ -12,7 +12,6 @@ use bedrockcloud\cloudbridge\network\packet\response\GameServerInfoResponsePacke
 use bedrockcloud\cloudbridge\network\packet\response\ListServerResponsePacket;
 use bedrockcloud\cloudbridge\network\packet\response\ListTemplatesResponsePacket;
 use bedrockcloud\cloudbridge\network\packet\response\TemplateInfoResponsePacket;
-use bedrockcloud\cloudbridge\network\packet\StartPrivateServerPacket;
 use bedrockcloud\cloudbridge\objects\CloudGroup;
 use bedrockcloud\cloudbridge\objects\CloudTemplate;
 use bedrockcloud\cloudbridge\objects\GameServer;
@@ -20,26 +19,6 @@ use pocketmine\scheduler\Task;
 use pocketmine\Server;
 
 class Utils{
-
-    public static function startPrivateServer(string $group, string $serverOwner): void{
-        $pk = new StartPrivateServerPacket();
-        $pk->addValue("groupName", $group);
-        $pk->addValue("serverOwner", $serverOwner);
-        $pk->sendPacket();
-    }
-
-    public static function getPrivateServerTemplates(): array{
-        $templates = [];
-        foreach (CloudBridge::$cloudTemplates as $cloudTemplate){
-            if ($cloudTemplate instanceof CloudTemplate){
-                if ($cloudTemplate->getIsPrivate() && !isset($templates[$cloudTemplate->getName()])){
-                    $templates[] = $cloudTemplate->getName();
-                }
-            }
-        }
-        return $templates;
-    }
-
     public static function startTasks(): void{
         CloudBridge::getInstance()->getScheduler()->scheduleRepeatingTask(new class extends Task{
             public function onRun(): void
@@ -54,14 +33,12 @@ class Utils{
                             $serverInfoPacket->submitRequest($serverInfoPacket, function (DataPacket $dataPacket) use ($name, $servers) {
                                 if ($dataPacket instanceof GameServerInfoResponsePacket) {
                                     $gameServer = new GameServer($dataPacket->getServerInfoName(), new CloudGroup($dataPacket->getTemplateName(), $dataPacket->isMaintenance(), $dataPacket->isBeta(), $dataPacket->isLobby(), $dataPacket->getMaxPlayer(), $dataPacket->getState(), $dataPacket->isStatic()));
-                                    $gameServer->setIsPrivate($dataPacket->isPrivate());
                                     $gameServer->setPlayerCount($dataPacket->getPlayerCount());
                                     $gameServer->setServerState($dataPacket->getState());
                                     if (!isset(CloudBridge::$gameServer[$name])) {
                                         CloudBridge::$gameServer[$name] = $gameServer;
                                     } elseif (isset(CloudBridge::$gameServer[$name])) {
                                         $gs = CloudBridge::$gameServer[$name];
-                                        $gs->setIsPrivate($dataPacket->isPrivate());
                                         $gs->setPlayerCount($dataPacket->getPlayerCount());
                                         $gs->setServerState($dataPacket->getState());
                                     }
