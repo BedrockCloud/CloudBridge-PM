@@ -29,9 +29,7 @@ use bedrockcloud\cloudbridge\network\packet\response\ServerStopResponsePacket;
 use bedrockcloud\cloudbridge\network\packet\response\TemplateInfoResponsePacket;
 use bedrockcloud\cloudbridge\network\packet\SendToHubPacket;
 use bedrockcloud\cloudbridge\network\packet\StartGroupPacket;
-use bedrockcloud\cloudbridge\network\packet\StartServerPacket;
 use bedrockcloud\cloudbridge\network\packet\StopGroupPacket;
-use bedrockcloud\cloudbridge\network\packet\StopServerPacket;
 use bedrockcloud\cloudbridge\network\packet\VersionInfoPacket;
 
 class PacketRegistry {
