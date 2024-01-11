@@ -7,7 +7,11 @@ use bedrockcloud\cloudbridge\CloudBridge;
 use bedrockcloud\cloudbridge\network\DataPacket;
 use bedrockcloud\cloudbridge\network\packet\PlayerMovePacket;
 use bedrockcloud\cloudbridge\network\packet\request\ListCloudPlayersRequestPacket;
+use bedrockcloud\cloudbridge\network\packet\request\ServerStartRequestPacket;
+use bedrockcloud\cloudbridge\network\packet\request\ServerStopRequestPacket;
 use bedrockcloud\cloudbridge\network\packet\response\ListCloudPlayersResponsePacket;
+use bedrockcloud\cloudbridge\network\packet\response\ServerStartResponsePacket;
+use bedrockcloud\cloudbridge\network\packet\response\ServerStopResponsePacket;
 use bedrockcloud\cloudbridge\network\packet\StartGroupPacket;
 use bedrockcloud\cloudbridge\network\packet\StartServerPacket;
 use bedrockcloud\cloudbridge\network\packet\StopGroupPacket;
@@ -34,20 +38,42 @@ class CloudCommand extends Command
                         if (isset($args[1]) && isset($args[2])) {
                             $group = $args[1];
                             $count = $args[2];
-                            $pk = new StartServerPacket();
+                            $pk = new ServerStartRequestPacket();
                             $pk->addValue("groupName", $group);
                             $pk->addValue("count", $count);
-                            $pk->sendPacket();
-                            $sender->sendMessage(CloudBridge::getPrefix() . "§aPacket was sent to the Cloud§8.");
+                            $pk->submitRequest($pk, function (DataPacket $dataPacket) use ($sender, $pk){
+                               if ($dataPacket instanceof ServerStartResponsePacket) {
+                                   if ($dataPacket->isSuccess()) {
+                                       $count = count($dataPacket->getServers());
+                                       $sender->sendMessage(CloudBridge::getPrefix() . "§aStarted §e{$count} §aservers successfully§7.");
+                                   } else {
+                                       if ($dataPacket->getFailureId() == $pk::FAILURE_GROUP_RUNNING) {
+                                           $sender->sendMessage(CloudBridge::getPrefix() . "§cThis group isn't running.");
+                                       } else if ($dataPacket->getFailureId() == $pk::FAILURE_TEMPLATE_EXISTENCE) {
+                                           $sender->sendMessage(CloudBridge::getPrefix() . "§cThis template don't exists.");
+                                       }
+                                   }
+                               }
+                            });
                         } else {
                             $sender->sendMessage("/cloud startserver <group> <count>");
                         }
                     } elseif ($args[0] == "stopserver") {
                         if (isset($args[1])) {
                             $server = $args[1];
-                            $pk = new StopServerPacket();
+                            $pk = new ServerStopRequestPacket();
                             $pk->addValue("serverName", $server);
-                            $pk->sendPacket();
+                            $pk->submitRequest($pk, function (DataPacket $dataPacket) use ($sender, $pk){
+                                if ($dataPacket instanceof ServerStopResponsePacket) {
+                                    if ($dataPacket->isSuccess()) {
+                                        $sender->sendMessage(CloudBridge::getPrefix() . "§aYou have stopped the server §e{$dataPacket->getServer()} §asuccessfully§7.");
+                                    } else {
+                                        if ($dataPacket->getFailureId() == $pk::FAILURE_SERVER_EXISTENCE) {
+                                            $sender->sendMessage(CloudBridge::getPrefix() . "§cThis server don't exists.");
+                                        }
+                                    }
+                                }
+                            });
                             $sender->sendMessage(CloudBridge::getPrefix() . "§aPacket was sent to the Cloud§8.");
                         } else {
                             $sender->sendMessage("/cloud stopserver <serverName>");

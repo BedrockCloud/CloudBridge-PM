@@ -16,12 +16,16 @@ use bedrockcloud\cloudbridge\network\packet\request\CloudServerInfoRequestPacket
 use bedrockcloud\cloudbridge\network\packet\request\ListCloudPlayersRequestPacket;
 use bedrockcloud\cloudbridge\network\packet\request\ListServerRequestPacket;
 use bedrockcloud\cloudbridge\network\packet\request\ListTemplatesRequestPacket;
+use bedrockcloud\cloudbridge\network\packet\request\ServerStartRequestPacket;
+use bedrockcloud\cloudbridge\network\packet\request\ServerStopRequestPacket;
 use bedrockcloud\cloudbridge\network\packet\request\TemplateInfoRequestPacket;
 use bedrockcloud\cloudbridge\network\packet\response\CloudPlayerInfoResponsePacket;
 use bedrockcloud\cloudbridge\network\packet\response\CloudServerInfoResponsePacket;
 use bedrockcloud\cloudbridge\network\packet\response\ListCloudPlayersResponsePacket;
 use bedrockcloud\cloudbridge\network\packet\response\ListServerResponsePacket;
 use bedrockcloud\cloudbridge\network\packet\response\ListTemplatesResponsePacket;
+use bedrockcloud\cloudbridge\network\packet\response\ServerStartResponsePacket;
+use bedrockcloud\cloudbridge\network\packet\response\ServerStopResponsePacket;
 use bedrockcloud\cloudbridge\network\packet\response\TemplateInfoResponsePacket;
 use bedrockcloud\cloudbridge\network\packet\SendToHubPacket;
 use bedrockcloud\cloudbridge\network\packet\StartGroupPacket;
@@ -46,9 +50,7 @@ class PacketRegistry {
             ProxyPlayerQuitPacket::class,
             KeepALivePacket::class,
             StartGroupPacket::class,
-            StartServerPacket::class,
             StopGroupPacket::class,
-            StopServerPacket::class,
             VersionInfoPacket::class,
             PlayerMovePacket::class,
             ListCloudPlayersRequestPacket::class,
@@ -62,6 +64,10 @@ class PacketRegistry {
             TemplateInfoResponsePacket::class,
             CloudPlayerInfoRequestPacket::class,
             CloudPlayerInfoResponsePacket::class,
+            ServerStartRequestPacket::class,
+            ServerStopRequestPacket::class,
+            ServerStartResponsePacket::class,
+            ServerStopResponsePacket::class
         ];
 
         foreach ($packets as $packet) {
