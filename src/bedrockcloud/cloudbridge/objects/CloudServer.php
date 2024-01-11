@@ -2,6 +2,7 @@
 
 namespace bedrockcloud\cloudbridge\objects;
 
+use bedrockcloud\cloudbridge\network\packet\request\ServerStartRequestPacket;
 use pocketmine\Server;
 use bedrockcloud\cloudbridge\network\packet\StartServerPacket;
 use bedrockcloud\cloudbridge\network\packet\UpdateGameServerInfoPacket;
@@ -21,7 +22,7 @@ class CloudServer
     {
         $this->name = $name;
         $this->cloudTemplate = $cloudTemplate;
-        $this->state = $cloudTemplate->getState();
+        $this->state = CloudServerState::NOT_REGISTERED;
         $this->isMaintenance = $cloudTemplate->isMaintenance();
         $this->isBeta = $cloudTemplate->isBeta();
         $this->playerCount = 0;
@@ -63,10 +64,10 @@ class CloudServer
     {
         $this->state = $state;
         if ($startNewServer){
-            $group = $this->cloudTemplate->getName();
+            $template = $this->cloudTemplate->getName();
             $count = 1;
-            $pk = new StartServerPacket();
-            $pk->addValue("groupName", $group);
+            $pk = new ServerStartRequestPacket();
+            $pk->addValue("templateName", $template);
             $pk->addValue("count", $count);
             $pk->sendPacket();
             Server::getInstance()->getLogger()->info("§cStarted an new CloudGameServer.");

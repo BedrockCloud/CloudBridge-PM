@@ -116,7 +116,7 @@ class CloudBridge extends PluginBase{
 
     public function onDisable(): void{
         $pk = new CloudServerDisconnectPacket();
-        $pk->serverName = CloudAPI::getInstance()->getCurrentServer()->getName();
+        $pk->serverName = Server::getInstance()->getMotd();
         $pk->sendPacket();
 
         self::$requestHandler->stop();

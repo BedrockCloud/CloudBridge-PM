@@ -58,8 +58,7 @@ class RequestHandler extends Thread{
         Server::getInstance()->shutdown();
     }
 
-    public function write(string $data): void
-    {
+    public function write(string $data): void {
         if ($this->stop) {
             return;
         }
