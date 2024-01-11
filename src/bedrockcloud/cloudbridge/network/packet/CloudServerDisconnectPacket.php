@@ -7,13 +7,13 @@ use bedrockcloud\cloudbridge\CloudBridge;
 use bedrockcloud\cloudbridge\network\DataPacket;
 use pocketmine\utils\Process;
 
-class GameServerDisconnectPacket extends DataPacket{
+class CloudServerDisconnectPacket extends DataPacket{
 
     public $serverName = "";
 
     public function getPacketName(): string
     {
-        return "GameServerDisconnectPacket";
+        return "CloudServerDisconnectPacket";
     }
 
     public function encode()

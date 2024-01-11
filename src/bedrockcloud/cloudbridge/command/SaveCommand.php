@@ -5,12 +5,13 @@ namespace bedrockcloud\cloudbridge\command;
 
 use bedrockcloud\cloudbridge\api\CloudAPI;
 use bedrockcloud\cloudbridge\CloudBridge;
+use bedrockcloud\cloudbridge\network\DataPacket;
+use bedrockcloud\cloudbridge\network\packet\request\SaveServerRequestPacket;
+use bedrockcloud\cloudbridge\network\packet\response\SaveServerResponsePacket;
 use bedrockcloud\cloudbridge\objects\CloudTemplate;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
-use pocketmine\command\utils\CommandException;
 use pocketmine\Server;
-use pocketmine\utils\MainLogger;
 
 class SaveCommand extends Command
 {
@@ -35,19 +36,20 @@ class SaveCommand extends Command
         if ($sender->hasPermission("cloud.admin")){
 			Server::getInstance()->getCommandMap()->dispatch($sender, "save-all");
 
-			$path1 = CloudAPI::getInstance()->getCloudPath() . "temp/". $serverName ."/";
-			$path = CloudAPI::getInstance()->getCloudPath();
+            $pk = new SaveServerRequestPacket();
+            $pk->addValue("serverName", $serverName);
 
-			Server::getInstance()->getLogger()->info("§aSave server§e " . $serverName);
-			if (is_dir("{$path}templates/") && is_dir($path1)) {
-				passthru("rm -r {$path}templates/" . $template->getName() . "/worlds/");
-				passthru("mkdir {$path}templates/" . $template->getName() . "/worlds/");
-				passthru("cp -r " . $path1 . "worlds/* {$path}templates/" . $template->getName() . "/worlds/");
-                passthru("cp -r " . $path1 . "plugin_data/* {$path}templates/" . $template->getName() . "/plugin_data/");
-				$sender->sendMessage(CloudBridge::getPrefix() . "§aThe Template is now updated!");
-			} else {
-				$sender->sendMessage(CloudBridge::getPrefix() . "§r§f§cError whilst saving files§7!§c Folder don't exists§7!");
-			}
+            $pk->submitRequest($pk, function (DataPacket $dataPacket) use ($pk, $sender, $serverName) {
+               if ($dataPacket instanceof SaveServerResponsePacket) {
+                   if ($dataPacket->isSuccess()) {
+                       $sender->sendMessage(CloudBridge::getPrefix() . "§aYou have saved the server §e{$serverName} §asuccessfully§7.");
+                   } else {
+                       if ($dataPacket->getFailureId() === $pk::FAILURE_SERVER_EXISTENCE) {
+                           $sender->sendMessage(CloudBridge::getPrefix() . "§cThis server don't exists.");
+                       }
+                   }
+               }
+            });
 		}
     }
 }

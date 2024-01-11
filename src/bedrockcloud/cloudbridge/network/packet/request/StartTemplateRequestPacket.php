@@ -4,13 +4,13 @@ namespace bedrockcloud\cloudbridge\network\packet\request;
 
 use bedrockcloud\cloudbridge\network\RequestPacket;
 
-class ServerStartRequestPacket extends RequestPacket {
+class StartTemplateRequestPacket extends RequestPacket {
     const FAILURE_TEMPLATE_EXISTENCE = 0;
     const FAILURE_TEMPLATE_RUNNING = 1;
 
     public function getPacketName(): string
     {
-        return "ServerStartRequestPacket";
+        return "StartTemplateRequestPacket";
     }
 
     public function encode()

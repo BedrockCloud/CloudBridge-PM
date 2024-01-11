@@ -9,9 +9,13 @@ use bedrockcloud\cloudbridge\network\packet\PlayerMovePacket;
 use bedrockcloud\cloudbridge\network\packet\request\ListCloudPlayersRequestPacket;
 use bedrockcloud\cloudbridge\network\packet\request\ServerStartRequestPacket;
 use bedrockcloud\cloudbridge\network\packet\request\ServerStopRequestPacket;
+use bedrockcloud\cloudbridge\network\packet\request\StartTemplateRequestPacket;
+use bedrockcloud\cloudbridge\network\packet\request\StopTemplateRequestPacket;
 use bedrockcloud\cloudbridge\network\packet\response\ListCloudPlayersResponsePacket;
 use bedrockcloud\cloudbridge\network\packet\response\ServerStartResponsePacket;
 use bedrockcloud\cloudbridge\network\packet\response\ServerStopResponsePacket;
+use bedrockcloud\cloudbridge\network\packet\response\StartTemplateResponsePacket;
+use bedrockcloud\cloudbridge\network\packet\response\StopTemplateResponsePacket;
 use bedrockcloud\cloudbridge\network\packet\StartGroupPacket;
 use bedrockcloud\cloudbridge\network\packet\StopGroupPacket;
 use pocketmine\command\Command;
@@ -23,7 +27,7 @@ class CloudCommand extends Command
 
     public function __construct()
     {
-        parent::__construct("cloud", "BedrockCloud", false, ["cl", "bedrock", "bedrockcloud"]);
+        parent::__construct("cloud", "Main cloud command", false, []);
         $this->setPermission("cloud.admin");
     }
 
@@ -34,10 +38,10 @@ class CloudCommand extends Command
                 if (isset($args[0])) {
                     if ($args[0] == "startserver") {
                         if (isset($args[1]) && isset($args[2])) {
-                            $group = $args[1];
+                            $template = $args[1];
                             $count = $args[2];
                             $pk = new ServerStartRequestPacket();
-                            $pk->addValue("groupName", $group);
+                            $pk->addValue("templateName", $template);
                             $pk->addValue("count", $count);
                             $pk->submitRequest($pk, function (DataPacket $dataPacket) use ($sender, $pk){
                                if ($dataPacket instanceof ServerStartResponsePacket) {
@@ -45,8 +49,8 @@ class CloudCommand extends Command
                                        $count = count($dataPacket->getServers());
                                        $sender->sendMessage(CloudBridge::getPrefix() . "§aStarted §e{$count} §aservers successfully§7.");
                                    } else {
-                                       if ($dataPacket->getFailureId() == $pk::FAILURE_GROUP_RUNNING) {
-                                           $sender->sendMessage(CloudBridge::getPrefix() . "§cThis group isn't running.");
+                                       if ($dataPacket->getFailureId() == $pk::FAILURE_TEMPLATE_RUNNING) {
+                                           $sender->sendMessage(CloudBridge::getPrefix() . "§cThis template isn't running.");
                                        } else if ($dataPacket->getFailureId() == $pk::FAILURE_TEMPLATE_EXISTENCE) {
                                            $sender->sendMessage(CloudBridge::getPrefix() . "§cThis template don't exists.");
                                        }
@@ -76,22 +80,48 @@ class CloudCommand extends Command
                         } else {
                             $sender->sendMessage("/cloud stopserver <serverName>");
                         }
-                    } elseif ($args[0] == "groupstop") {
+                    } elseif ($args[0] == "templatestop") {
                         if (isset($args[1])) {
-                            $group = $args[1];
-                            $pk = new StopGroupPacket();
-                            $pk->addValue("groupName", $group);
-                            $pk->sendPacket();
+                            $template = $args[1];
+                            $pk = new StopTemplateRequestPacket();
+                            $pk->addValue("templateName", $template);
+                            $pk->submitRequest($pk, function (DataPacket $dataPacket) use ($sender, $pk) {
+                               if ($dataPacket instanceof StopTemplateResponsePacket) {
+                                   if ($dataPacket->isSuccess()) {
+                                       $template = $dataPacket->getTemplateName();
+                                       $sender->sendMessage(CloudBridge::getPrefix() . "§aThe template §e{$template} §awas stopped succesfully§7.");
+                                   } else {
+                                       if ($dataPacket->getFailureId() === $pk::FAILURE_TEMPLATE_EXISTENCE) {
+                                           $sender->sendMessage(CloudBridge::getPrefix() . "§cThis template don't exists.");
+                                       } elseif ($dataPacket->getFailureId() === $pk::FAILURE_TEMPLATE_NOT_RUNNING) {
+                                           $sender->sendMessage(CloudBridge::getPrefix() . "§cThis template isn't running.");
+                                       }
+                                   }
+                               }
+                            });
                             $sender->sendMessage(CloudBridge::getPrefix() . "§aPacket was sent to the Cloud§8.");
                         } else {
                             $sender->sendMessage("/cloud groupstop <serverName>");
                         }
-                    } elseif ($args[0] == "groupstart") {
+                    } elseif ($args[0] == "templatestart") {
                         if (isset($args[1])) {
                             $group = $args[1];
-                            $pk = new StartGroupPacket();
-                            $pk->addValue("groupName", $group);
-                            $pk->sendPacket();
+                            $pk = new StartTemplateRequestPacket();
+                            $pk->addValue("templateName", $group);
+                            $pk->submitRequest($pk, function (DataPacket $dataPacket) use ($sender, $pk) {
+                                if ($dataPacket instanceof StartTemplateResponsePacket) {
+                                    if ($dataPacket->isSuccess()) {
+                                        $template = $dataPacket->getTemplate()[0];
+                                        $sender->sendMessage(CloudBridge::getPrefix() . "§aThe template §e{$template} §awas started succesfully§7.");
+                                    } else {
+                                        if ($dataPacket->getFailureId() === $pk::FAILURE_TEMPLATE_EXISTENCE) {
+                                            $sender->sendMessage(CloudBridge::getPrefix() . "§cThis template don't exists.");
+                                        } elseif ($dataPacket->getFailureId() === $pk::FAILURE_TEMPLATE_RUNNING) {
+                                            $sender->sendMessage(CloudBridge::getPrefix() . "§cThis template is already running.");
+                                        }
+                                    }
+                                }
+                            });
                             $sender->sendMessage(CloudBridge::getPrefix() . "§aPacket was sent to the Cloud§8.");
                         } else {
                             $sender->sendMessage("/cloud groupstart <serverName>");
@@ -129,8 +159,8 @@ class CloudCommand extends Command
                     $message = CloudBridge::getPrefix() . "§eCommands§7:" . PHP_EOL;
                     $message .= "/cloud startserver <template> <count>" . PHP_EOL;
                     $message .= "/cloud stopserver <server>" . PHP_EOL;
-                    $message .= "/cloud groupstop <template>" . PHP_EOL;
-                    $message .= "/cloud groupstart <template>" . PHP_EOL;
+                    $message .= "/cloud templatestart <template>" . PHP_EOL;
+                    $message .= "/cloud templatestop <template>" . PHP_EOL;
                     $message .= "/cloud transfer <player> <server>" . PHP_EOL;
                     $message .= "/cloud list" . PHP_EOL;
                     $message .= "/cloud version";

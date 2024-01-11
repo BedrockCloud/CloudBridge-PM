@@ -12,8 +12,8 @@ use bedrockcloud\cloudbridge\listener\server\PlayerQuitListener;
 use bedrockcloud\cloudbridge\network\DataPacket;
 use bedrockcloud\cloudbridge\network\handler\PacketHandler;
 use bedrockcloud\cloudbridge\network\handler\RequestHandler;
-use bedrockcloud\cloudbridge\network\packet\GameServerConnectPacket;
-use bedrockcloud\cloudbridge\network\packet\GameServerDisconnectPacket;
+use bedrockcloud\cloudbridge\network\packet\CloudServerConnectPacket;
+use bedrockcloud\cloudbridge\network\packet\CloudServerDisconnectPacket;
 use bedrockcloud\cloudbridge\network\packet\request\CloudServerInfoRequestPacket;
 use bedrockcloud\cloudbridge\network\packet\request\TemplateInfoRequestPacket;
 use bedrockcloud\cloudbridge\network\packet\response\CloudServerInfoResponsePacket;
@@ -84,7 +84,7 @@ class CloudBridge extends PluginBase{
             new CloudNotifyCommand(),
         ]);
 
-        $pk = new GameServerConnectPacket();
+        $pk = new CloudServerConnectPacket();
         $pk->addValue("serverPort", $this->getServer()->getPort());
         $pk->addValue("serverPid", getmypid());
         $pk->sendPacket();
@@ -115,7 +115,7 @@ class CloudBridge extends PluginBase{
     }
 
     public function onDisable(): void{
-        $pk = new GameServerDisconnectPacket();
+        $pk = new CloudServerDisconnectPacket();
         $pk->serverName = CloudAPI::getInstance()->getCurrentServer()->getName();
         $pk->sendPacket();
 

@@ -3,8 +3,8 @@
 namespace bedrockcloud\cloudbridge\network\registry;
 
 use bedrockcloud\cloudbridge\network\handler\PacketHandler;
-use bedrockcloud\cloudbridge\network\packet\GameServerConnectPacket;
-use bedrockcloud\cloudbridge\network\packet\GameServerDisconnectPacket;
+use bedrockcloud\cloudbridge\network\packet\CloudServerConnectPacket;
+use bedrockcloud\cloudbridge\network\packet\CloudServerDisconnectPacket;
 use bedrockcloud\cloudbridge\network\packet\KeepALivePacket;
 use bedrockcloud\cloudbridge\network\packet\PlayerKickPacket;
 use bedrockcloud\cloudbridge\network\packet\PlayerMessagePacket;
@@ -16,6 +16,7 @@ use bedrockcloud\cloudbridge\network\packet\request\CloudServerInfoRequestPacket
 use bedrockcloud\cloudbridge\network\packet\request\ListCloudPlayersRequestPacket;
 use bedrockcloud\cloudbridge\network\packet\request\ListServerRequestPacket;
 use bedrockcloud\cloudbridge\network\packet\request\ListTemplatesRequestPacket;
+use bedrockcloud\cloudbridge\network\packet\request\SaveServerRequestPacket;
 use bedrockcloud\cloudbridge\network\packet\request\ServerStartRequestPacket;
 use bedrockcloud\cloudbridge\network\packet\request\ServerStopRequestPacket;
 use bedrockcloud\cloudbridge\network\packet\request\TemplateInfoRequestPacket;
@@ -24,6 +25,7 @@ use bedrockcloud\cloudbridge\network\packet\response\CloudServerInfoResponsePack
 use bedrockcloud\cloudbridge\network\packet\response\ListCloudPlayersResponsePacket;
 use bedrockcloud\cloudbridge\network\packet\response\ListServerResponsePacket;
 use bedrockcloud\cloudbridge\network\packet\response\ListTemplatesResponsePacket;
+use bedrockcloud\cloudbridge\network\packet\response\SaveServerResponsePacket;
 use bedrockcloud\cloudbridge\network\packet\response\ServerStartResponsePacket;
 use bedrockcloud\cloudbridge\network\packet\response\ServerStopResponsePacket;
 use bedrockcloud\cloudbridge\network\packet\response\TemplateInfoResponsePacket;
@@ -38,8 +40,8 @@ class PacketRegistry {
      */
     public static function registerPackets(): void{
         $packets = [
-            GameServerConnectPacket::class,
-            GameServerDisconnectPacket::class,
+            CloudServerConnectPacket::class,
+            CloudServerDisconnectPacket::class,
             CloudServerInfoRequestPacket::class,
             CloudServerInfoResponsePacket::class,
             ListServerRequestPacket::class,
@@ -65,7 +67,9 @@ class PacketRegistry {
             ServerStartRequestPacket::class,
             ServerStopRequestPacket::class,
             ServerStartResponsePacket::class,
-            ServerStopResponsePacket::class
+            ServerStopResponsePacket::class,
+            SaveServerRequestPacket::class,
+            SaveServerResponsePacket::class
         ];
 
         foreach ($packets as $packet) {
