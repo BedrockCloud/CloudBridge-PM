@@ -41,6 +41,38 @@ class Utils{
                                         unset(CloudBridge::$cloudTemplates[$cloudTemplate->getName()]);
                                     }
                                 }
+
+                                $listServers = new ListServerRequestPacket();
+                                $listServers->submitRequest($listServers, function (DataPacket $pk) {
+                                    if ($pk instanceof ListServerResponsePacket) {
+                                        $servers = json_decode($pk->data["servers"], true);
+                                        foreach ($servers as $name) {
+                                            $serverInfoPacket = new CloudServerInfoRequestPacket();
+                                            $serverInfoPacket->server = $name;
+                                            $serverInfoPacket->submitRequest($serverInfoPacket, function (DataPacket $dataPacket) use ($name, $servers) {
+                                                if ($dataPacket instanceof CloudServerInfoResponsePacket) {
+                                                    $template = CloudAPI::getInstance()->getTemplate($dataPacket->getTemplateName());
+                                                    $cloudServer = new CloudServer($dataPacket->getServerInfoName(), $template);
+                                                    $cloudServer->setPlayerCount($dataPacket->getPlayerCount());
+                                                    $cloudServer->setServerState($dataPacket->getState());
+                                                    if (!isset(CloudBridge::$cloudServer[$name])) {
+                                                        CloudBridge::$cloudServer[$name] = $cloudServer;
+                                                    } elseif (isset(CloudBridge::$cloudServer[$name])) {
+                                                        $gs = CloudBridge::$cloudServer[$name];
+                                                        $gs->setPlayerCount($dataPacket->getPlayerCount());
+                                                        $gs->setServerState($dataPacket->getState());
+                                                    }
+                                                }
+
+                                                foreach (CloudBridge::$cloudServer as $cloudServer) {
+                                                    if (!in_array($cloudServer->getName(), $servers)) {
+                                                        unset(CloudBridge::$cloudServer[$cloudServer->getName()]);
+                                                    }
+                                                }
+                                            });
+                                        }
+                                    }
+                                });
                             });
                         }
                     }
@@ -51,37 +83,6 @@ class Utils{
         CloudBridge::getInstance()->getScheduler()->scheduleRepeatingTask(new class extends Task{
             public function onRun(): void
             {
-                $listServers = new ListServerRequestPacket();
-                $listServers->submitRequest($listServers, function (DataPacket $pk) {
-                    if ($pk instanceof ListServerResponsePacket) {
-                        $servers = json_decode($pk->data["servers"], true);
-                        foreach ($servers as $name) {
-                            $serverInfoPacket = new CloudServerInfoRequestPacket();
-                            $serverInfoPacket->server = $name;
-                            $serverInfoPacket->submitRequest($serverInfoPacket, function (DataPacket $dataPacket) use ($name, $servers) {
-                                if ($dataPacket instanceof CloudServerInfoResponsePacket) {
-                                    $template = CloudAPI::getInstance()->getTemplate($dataPacket->getTemplateName());
-                                    $cloudServer = new CloudServer($dataPacket->getServerInfoName(), $template);
-                                    $cloudServer->setPlayerCount($dataPacket->getPlayerCount());
-                                    $cloudServer->setServerState($dataPacket->getState());
-                                    if (!isset(CloudBridge::$cloudServer[$name])) {
-                                        CloudBridge::$cloudServer[$name] = $cloudServer;
-                                    } elseif (isset(CloudBridge::$cloudServer[$name])) {
-                                        $gs = CloudBridge::$cloudServer[$name];
-                                        $gs->setPlayerCount($dataPacket->getPlayerCount());
-                                        $gs->setServerState($dataPacket->getState());
-                                    }
-                                }
-
-                                foreach (CloudBridge::$cloudServer as $cloudServer) {
-                                    if (!in_array($cloudServer->getName(), $servers)) {
-                                        unset(CloudBridge::$cloudServer[$cloudServer->getName()]);
-                                    }
-                                }
-                            });
-                        }
-                    }
-                });
             }
         }, 20);
     }
