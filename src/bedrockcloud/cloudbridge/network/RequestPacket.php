@@ -23,6 +23,4 @@ class RequestPacket extends DataPacket
         CloudBridge::$requests[$this->requestId] = $closure;
         return $closure;
     }
-
-
 }

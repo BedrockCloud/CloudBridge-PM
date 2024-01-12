@@ -77,7 +77,7 @@ class CloudBridge extends PluginBase{
         $this->getServer()->getPluginManager()->registerEvents(new PlayerJoinListener(), $this);
         $this->getServer()->getPluginManager()->registerEvents(new PlayerQuitListener(), $this);
 
-        $this->getServer()->getCommandMap()->registerAll("command:bedrockcloud", [
+        $this->getServer()->getCommandMap()->registerAll("command:cloud", [
             new CloudCommand(),
             new SaveCommand(),
             new ServerInfoCommand(),
@@ -100,13 +100,12 @@ class CloudBridge extends PluginBase{
                 $serverInfoPacket->server = Server::getInstance()->getMotd();
                 $serverInfoPacket->submitRequest($serverInfoPacket, function (DataPacket $pk) use ($template, $dataPacket) {
                     if ($pk instanceof CloudServerInfoResponsePacket) {
-                        if ($pk->getTemplateName() === $dataPacket->getTemplateName()) {
-                            $cloudServer = new CloudServer($pk->getServerInfoName(), $template);
-                            $cloudServer->setState(CloudServerState::LOBBY, false);
-                            $cloudServer->setPlayerCount($pk->getPlayerCount());
-                            CloudBridge::$cloudServer[$pk->getServerInfoName()] = $cloudServer;
-                        }
+                        $cloudServer = new CloudServer($pk->getServerInfoName(), $template);
+                        $cloudServer->setState(CloudServerState::LOBBY, false);
+                        $cloudServer->setPlayerCount($pk->getPlayerCount());
+                        CloudBridge::$cloudServer[$pk->getServerInfoName()] = $cloudServer;
                     }
+                    var_dump(CloudBridge::$cloudTemplates, CloudBridge::$cloudServer);
                 });
             }
         });

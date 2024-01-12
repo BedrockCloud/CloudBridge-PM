@@ -30,8 +30,6 @@ use bedrockcloud\cloudbridge\network\packet\response\ServerStartResponsePacket;
 use bedrockcloud\cloudbridge\network\packet\response\ServerStopResponsePacket;
 use bedrockcloud\cloudbridge\network\packet\response\TemplateInfoResponsePacket;
 use bedrockcloud\cloudbridge\network\packet\SendToHubPacket;
-use bedrockcloud\cloudbridge\network\packet\StartGroupPacket;
-use bedrockcloud\cloudbridge\network\packet\StopGroupPacket;
 use bedrockcloud\cloudbridge\network\packet\VersionInfoPacket;
 
 class PacketRegistry {
@@ -49,8 +47,6 @@ class PacketRegistry {
             ProxyPlayerJoinPacket::class,
             ProxyPlayerQuitPacket::class,
             KeepALivePacket::class,
-            StartGroupPacket::class,
-            StopGroupPacket::class,
             VersionInfoPacket::class,
             PlayerMovePacket::class,
             ListCloudPlayersRequestPacket::class,

@@ -43,19 +43,19 @@ class CloudCommand extends Command
                             $pk = new ServerStartRequestPacket();
                             $pk->addValue("templateName", $template);
                             $pk->addValue("count", $count);
-                            $pk->submitRequest($pk, function (DataPacket $dataPacket) use ($sender, $pk){
-                               if ($dataPacket instanceof ServerStartResponsePacket) {
-                                   if ($dataPacket->isSuccess()) {
-                                       $count = count($dataPacket->getServers());
-                                       $sender->sendMessage(CloudBridge::getPrefix() . "§aStarted §e{$count} §aservers successfully§7.");
-                                   } else {
-                                       if ($dataPacket->getFailureId() == $pk::FAILURE_TEMPLATE_RUNNING) {
-                                           $sender->sendMessage(CloudBridge::getPrefix() . "§cThis template isn't running.");
-                                       } else if ($dataPacket->getFailureId() == $pk::FAILURE_TEMPLATE_EXISTENCE) {
-                                           $sender->sendMessage(CloudBridge::getPrefix() . "§cThis template don't exists.");
-                                       }
-                                   }
-                               }
+                            $pk->submitRequest($pk, function (DataPacket $dataPacket) use ($sender, $pk) {
+                                if ($dataPacket instanceof ServerStartResponsePacket) {
+                                    if ($dataPacket->isSuccess()) {
+                                        $count = count($dataPacket->getServers());
+                                        $sender->sendMessage(CloudBridge::getPrefix() . "§aStarted §e{$count} §aservers successfully§7.");
+                                    } else {
+                                        if ($dataPacket->getFailureId() == $pk::FAILURE_TEMPLATE_RUNNING) {
+                                            $sender->sendMessage(CloudBridge::getPrefix() . "§cThis template isn't running.");
+                                        } else if ($dataPacket->getFailureId() == $pk::FAILURE_TEMPLATE_EXISTENCE) {
+                                            $sender->sendMessage(CloudBridge::getPrefix() . "§cThis template don't exists.");
+                                        }
+                                    }
+                                }
                             });
                         } else {
                             $sender->sendMessage("/cloud startserver <group> <count>");
