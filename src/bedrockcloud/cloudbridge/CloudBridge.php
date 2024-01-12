@@ -105,7 +105,6 @@ class CloudBridge extends PluginBase{
                         $cloudServer->setPlayerCount($pk->getPlayerCount());
                         CloudBridge::$cloudServer[$pk->getServerInfoName()] = $cloudServer;
                     }
-                    var_dump(CloudBridge::$cloudTemplates, CloudBridge::$cloudServer);
                 });
             }
         });
