@@ -25,7 +25,7 @@ class CloudNotifyCommand extends Command
         if (!$sender instanceof Player) return;
         if (!$this->testPermissionSilent($sender)) return;
         $notifyFile = new Config(CloudAPI::getInstance()->getCloudPath() . "local/notify/{$sender->getName()}.json", Config::JSON);
-        if (!(bool)$notifyFile->get("notify")){
+        if (!$notifyFile->get("notify")){
             $notifyFile->set("notify", true);
             $notifyFile->save();
             $sender->sendMessage(CloudBridge::getPrefix() . "§aYou are now logged in to the cloud notify system§7.");

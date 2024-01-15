@@ -5,7 +5,6 @@ namespace bedrockcloud\cloudbridge;
 use bedrockcloud\cloudbridge\api\CloudAPI;
 use bedrockcloud\cloudbridge\command\CloudCommand;
 use bedrockcloud\cloudbridge\command\CloudNotifyCommand;
-use bedrockcloud\cloudbridge\command\SaveCommand;
 use bedrockcloud\cloudbridge\command\ServerInfoCommand;
 use bedrockcloud\cloudbridge\listener\server\PlayerJoinListener;
 use bedrockcloud\cloudbridge\listener\server\PlayerQuitListener;
@@ -81,7 +80,6 @@ class CloudBridge extends PluginBase{
 
         $this->getServer()->getCommandMap()->registerAll("command:cloud", [
             new CloudCommand(),
-            new SaveCommand(),
             new ServerInfoCommand(),
             new CloudNotifyCommand(),
         ]);
