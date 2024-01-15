@@ -36,6 +36,14 @@ class CloudCommand extends Command
 
     public function execute(CommandSender $sender, string $commandLabel, array $args)
     {
+        $helpMessage = CloudBridge::getPrefix() . "§eCommands§7:" . PHP_EOL;
+        $helpMessage .= "/cloud start <template|server> <template> [count]" . PHP_EOL;
+        $helpMessage .= "/cloud stop <template|server> <name>" . PHP_EOL;
+        $helpMessage .= "/cloud transfer <player> <server>" . PHP_EOL;
+        $helpMessage .= "/cloud save" . PHP_EOL;
+        $helpMessage .= "/cloud list" . PHP_EOL;
+        $helpMessage .= "/cloud version";
+
         if ($sender instanceof Player) {
             if ($sender->hasPermission("cloud.admin")) {
                 if (isset($args[0])) {
@@ -174,17 +182,11 @@ class CloudCommand extends Command
                                 }
                             }
                         });
+                    } else {
+                        $sender->sendMessage($helpMessage);
                     }
                 } else {
-                    $message = CloudBridge::getPrefix() . "§eCommands§7:" . PHP_EOL;
-                    $message .= "/cloud start <template|server> <template> [count]" . PHP_EOL;
-                    $message .= "/cloud stop <template|server> <name>" . PHP_EOL;
-                    $message .= "/cloud transfer <player> <server>" . PHP_EOL;
-                    $message .= "/cloud save" . PHP_EOL;
-                    $message .= "/cloud list" . PHP_EOL;
-                    $message .= "/cloud version";
-
-                    $sender->sendMessage($message);
+                    $sender->sendMessage($helpMessage);
                 }
             } else {
                 $sender->sendMessage("§cNo Perms");
