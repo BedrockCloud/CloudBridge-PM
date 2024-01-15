@@ -23,6 +23,7 @@ use bedrockcloud\cloudbridge\objects\CloudTemplate;
 use bedrockcloud\cloudbridge\objects\CloudServer;
 use bedrockcloud\cloudbridge\objects\CloudServerState;
 use bedrockcloud\cloudbridge\objects\VersionInfo;
+use bedrockcloud\cloudbridge\task\TimeoutTask;
 use bedrockcloud\cloudbridge\utils\Utils;
 use pmmp\thread\ThreadSafeArray;
 use pocketmine\plugin\PluginBase;
@@ -51,6 +52,7 @@ class CloudBridge extends PluginBase{
     public static VersionInfo $versionInfo;
 
     private static ?CloudAPI $cloudAPI = null;
+    public float|int $lastKeepALiveCheck = 0.0;
 
     public function onEnable(): void
     {
@@ -110,6 +112,9 @@ class CloudBridge extends PluginBase{
         });
 
         Utils::startTasks();
+
+        $this->lastKeepALiveCheck = time();
+        $this->getScheduler()->scheduleRepeatingTask(new TimeoutTask(), 20);
     }
 
     public function onDisable(): void{
