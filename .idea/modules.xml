@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/BedrockCloudBridge-PMMP.iml" filepath="$PROJECT_DIR$/.idea/BedrockCloudBridge-PMMP.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/CloudBridge-PM.iml" filepath="$PROJECT_DIR$/.idea/CloudBridge-PM.iml" />
     </modules>
   </component>
 </project>

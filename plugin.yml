@@ -2,7 +2,7 @@ name: CloudBridge
 author: xxFLORII
 api: ["5.0.0"]
 main: bedrockcloud\cloudbridge\CloudBridge
-version: 1.0.7
+version: 1.0.8
 load: STARTUP
 description: CloudBridge plugin for BedrockCloud.
 

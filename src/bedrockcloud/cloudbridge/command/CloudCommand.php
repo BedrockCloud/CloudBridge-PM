@@ -7,12 +7,16 @@ use bedrockcloud\cloudbridge\CloudBridge;
 use bedrockcloud\cloudbridge\network\DataPacket;
 use bedrockcloud\cloudbridge\network\packet\PlayerMovePacket;
 use bedrockcloud\cloudbridge\network\packet\request\ListCloudPlayersRequestPacket;
+use bedrockcloud\cloudbridge\network\packet\request\ListServerRequestPacket;
+use bedrockcloud\cloudbridge\network\packet\request\ListTemplatesRequestPacket;
 use bedrockcloud\cloudbridge\network\packet\request\SaveServerRequestPacket;
 use bedrockcloud\cloudbridge\network\packet\request\ServerStartRequestPacket;
 use bedrockcloud\cloudbridge\network\packet\request\ServerStopRequestPacket;
 use bedrockcloud\cloudbridge\network\packet\request\StartTemplateRequestPacket;
 use bedrockcloud\cloudbridge\network\packet\request\StopTemplateRequestPacket;
 use bedrockcloud\cloudbridge\network\packet\response\ListCloudPlayersResponsePacket;
+use bedrockcloud\cloudbridge\network\packet\response\ListServerResponsePacket;
+use bedrockcloud\cloudbridge\network\packet\response\ListTemplatesResponsePacket;
 use bedrockcloud\cloudbridge\network\packet\response\SaveServerResponsePacket;
 use bedrockcloud\cloudbridge\network\packet\response\ServerStartResponsePacket;
 use bedrockcloud\cloudbridge\network\packet\response\ServerStopResponsePacket;
@@ -41,7 +45,7 @@ class CloudCommand extends Command
         $helpMessage .= "/cloud stop <template|server> <name>" . PHP_EOL;
         $helpMessage .= "/cloud transfer <player> <server>" . PHP_EOL;
         $helpMessage .= "/cloud save" . PHP_EOL;
-        $helpMessage .= "/cloud list" . PHP_EOL;
+        $helpMessage .= "/cloud list <players|templates|servers>" . PHP_EOL;
         $helpMessage .= "/cloud version";
 
         if ($sender instanceof Player) {
@@ -139,15 +143,37 @@ class CloudCommand extends Command
                             $sender->sendMessage("/cloud stop <template|server> <name>");
                         }
                     } elseif ($args[0] == "list") {
-                        $pk = new ListCloudPlayersRequestPacket();
-                        $pk->submitRequest($pk, function (DataPacket $dataPacket) use ($sender) {
-                            if ($dataPacket instanceof ListCloudPlayersResponsePacket) {
-                                $playerNames = $dataPacket->players;
-                                sort($playerNames, SORT_STRING);
-                                $sender->sendMessage("Currently are " . count($playerNames) . " players online:");
-                                $sender->sendMessage(implode(", ", $playerNames));
-                            }
-                        });
+                        if (strtolower($args[1]) === "players") {
+                            $pk = new ListCloudPlayersRequestPacket();
+                            $pk->submitRequest($pk, function (DataPacket $dataPacket) use ($sender) {
+                                if ($dataPacket instanceof ListCloudPlayersResponsePacket) {
+                                    $playerNames = $dataPacket->players;
+                                    sort($playerNames, SORT_STRING);
+                                    $sender->sendMessage(CloudBridge::getPrefix() . "Currently are " . count($playerNames) . " players online:");
+                                    $sender->sendMessage(implode(", ", $playerNames));
+                                }
+                            });
+                        } elseif (strtolower($args[1]) === "templates") {
+                            $pk = new ListTemplatesRequestPacket();
+                            $pk->submitRequest($pk, function (DataPacket $dataPacket) use ($sender) {
+                                if ($dataPacket instanceof ListTemplatesResponsePacket) {
+                                    $templates = $dataPacket->templates;
+                                    sort($templates, SORT_STRING);
+                                    $sender->sendMessage(CloudBridge::getPrefix() . "Currently are " . count($templates) . " templates running:");
+                                    $sender->sendMessage(implode(", ", $templates));
+                                }
+                            });
+                        } elseif (strtolower($args[1]) === "servers") {
+                            $pk = new ListServerRequestPacket();
+                            $pk->submitRequest($pk, function (DataPacket $dataPacket) use ($sender) {
+                                if ($dataPacket instanceof ListServerResponsePacket) {
+                                    $servers = $dataPacket->servers;
+                                    sort($servers, SORT_STRING);
+                                    $sender->sendMessage(CloudBridge::getPrefix() . "Currently are " . count($servers) . " servers running:");
+                                    $sender->sendMessage(implode(", ", $servers));
+                                }
+                            });
+                        }
                     } elseif ($args[0] == "transfer") {
                         if (isset($args[1]) && isset($args[2])) {
                             $playerName = $args[1];
