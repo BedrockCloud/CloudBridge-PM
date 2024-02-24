@@ -36,9 +36,25 @@ class CloudTemplate{
         return $this->maintenance;
     }
 
+    /**
+     * @param bool $maintenance
+     */
+    public function setMaintenance(bool $maintenance): void
+    {
+        $this->maintenance = $maintenance;
+    }
+
     public function isBeta(): bool
     {
         return $this->beta;
+    }
+
+    /**
+     * @param bool $beta
+     */
+    public function setBeta(bool $beta): void
+    {
+        $this->beta = $beta;
     }
 
     public function getName(): string
@@ -55,11 +71,27 @@ class CloudTemplate{
     }
 
     /**
+     * @param int $maxPlayer
+     */
+    public function setMaxPlayer(int $maxPlayer): void
+    {
+        $this->maxPlayer = $maxPlayer;
+    }
+
+    /**
      * @return bool
      */
     public function isStatic(): bool
     {
         return $this->static;
+    }
+
+    /**
+     * @param bool $static
+     */
+    public function setStatic(bool $static): void
+    {
+        $this->static = $static;
     }
 
     /**

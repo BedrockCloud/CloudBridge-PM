@@ -32,6 +32,7 @@ use bedrockcloud\cloudbridge\network\packet\response\ServerStartResponsePacket;
 use bedrockcloud\cloudbridge\network\packet\response\ServerStopResponsePacket;
 use bedrockcloud\cloudbridge\network\packet\response\TemplateInfoResponsePacket;
 use bedrockcloud\cloudbridge\network\packet\SendToHubPacket;
+use bedrockcloud\cloudbridge\network\packet\TemplateUpdatePacket;
 use bedrockcloud\cloudbridge\network\packet\VersionInfoPacket;
 
 class PacketRegistry {
@@ -70,6 +71,7 @@ class PacketRegistry {
             SaveServerResponsePacket::class,
             CheckPlayerMaintenanceRequestPacket::class,
             CheckPlayerMaintenanceResponsePacket::class,
+            TemplateUpdatePacket::class,
         ];
 
         foreach ($packets as $packet) {
