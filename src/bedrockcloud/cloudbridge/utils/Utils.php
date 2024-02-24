@@ -58,9 +58,9 @@ class Utils{
                                                     if (!isset(CloudBridge::$cloudServer[$name])) {
                                                         CloudBridge::$cloudServer[$name] = $cloudServer;
                                                     } elseif (isset(CloudBridge::$cloudServer[$name])) {
-                                                        $gs = CloudBridge::$cloudServer[$name];
-                                                        $gs->setPlayerCount($dataPacket->getPlayerCount());
-                                                        $gs->setServerState($dataPacket->getState());
+                                                        $cloudServer = CloudBridge::$cloudServer[$name];
+                                                        $cloudServer->setPlayerCount($dataPacket->getPlayerCount());
+                                                        $cloudServer->setServerState($dataPacket->getState());
                                                     }
                                                 }
 
@@ -77,12 +77,6 @@ class Utils{
                         }
                     }
                 });
-            }
-        }, 20);
-
-        CloudBridge::getInstance()->getScheduler()->scheduleRepeatingTask(new class extends Task{
-            public function onRun(): void
-            {
             }
         }, 20);
     }
