@@ -82,7 +82,7 @@ class CloudCommand extends Command
                                         if ($dataPacket instanceof StartTemplateResponsePacket) {
                                             if ($dataPacket->isSuccess()) {
                                                 $template = $dataPacket->getTemplate()[0];
-                                                $sender->sendMessage(CloudBridge::getPrefix() . "§aThe template §e{$template} §awas started succesfully§7.");
+                                                $sender->sendMessage(CloudBridge::getPrefix() . "§aThe template §e{$template} §awas started successfully§7.");
                                             } else {
                                                 if ($dataPacket->getFailureId() === $pk::FAILURE_TEMPLATE_EXISTENCE) {
                                                     $sender->sendMessage(CloudBridge::getPrefix() . "§cThis template don't exists.");
@@ -124,7 +124,7 @@ class CloudCommand extends Command
                                     if ($dataPacket instanceof StopTemplateResponsePacket) {
                                         if ($dataPacket->isSuccess()) {
                                             $template = $dataPacket->getTemplateName();
-                                            $sender->sendMessage(CloudBridge::getPrefix() . "§aThe template §e{$template} §awas stopped succesfully§7.");
+                                            $sender->sendMessage(CloudBridge::getPrefix() . "§aThe template §e{$template} §awas stopped successfully§7.");
                                         } else {
                                             if ($dataPacket->getFailureId() === $pk::FAILURE_TEMPLATE_EXISTENCE) {
                                                 $sender->sendMessage(CloudBridge::getPrefix() . "§cThis template don't exists.");
@@ -213,7 +213,7 @@ class CloudCommand extends Command
                     $sender->sendMessage($helpMessage);
                 }
             } else {
-                $sender->sendMessage("§cNo Perms");
+                $sender->sendMessage("§cYou don't have enough permissions to execute this command.");
             }
         }
     }

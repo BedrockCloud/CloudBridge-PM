@@ -23,7 +23,7 @@ class CloudNotifyCommand extends Command
      */
     public function execute(CommandSender $sender, string $commandLabel, array $args) {
         if (!$sender instanceof Player) return;
-        if (!$this->testPermissionSilent($sender)) return;
+        if (!$this->testPermission($sender)) return;
         $notifyFile = new Config(CloudAPI::getInstance()->getCloudPath() . "local/notify/{$sender->getName()}.json", Config::JSON);
         if (!$notifyFile->get("notify")){
             $notifyFile->set("notify", true);
