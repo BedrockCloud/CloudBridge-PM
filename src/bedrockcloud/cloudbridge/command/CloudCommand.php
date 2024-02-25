@@ -22,8 +22,6 @@ use bedrockcloud\cloudbridge\network\packet\response\ServerStartResponsePacket;
 use bedrockcloud\cloudbridge\network\packet\response\ServerStopResponsePacket;
 use bedrockcloud\cloudbridge\network\packet\response\StartTemplateResponsePacket;
 use bedrockcloud\cloudbridge\network\packet\response\StopTemplateResponsePacket;
-use bedrockcloud\cloudbridge\network\packet\StartGroupPacket;
-use bedrockcloud\cloudbridge\network\packet\StopGroupPacket;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\player\Player;
@@ -188,9 +186,9 @@ class CloudCommand extends Command
                         }
                     } elseif ($args[0] == "version") {
                         if (CloudAPI::getVersionInfo()->identifier === "@Beta") {
-                            $sender->sendMessage(CloudBridge::getPrefix() . "THE BEDROCKCLOUD IS RUNNING ON AN UNSTABLE VERSION (" . CloudAPI::getVersionInfo()->version . CloudAPI::getVersionInfo()->identifier . ")");
+                            $sender->sendMessage(CloudBridge::getPrefix() . "THE CLOUD IS RUNNING ON AN UNSTABLE VERSION (" . CloudAPI::getVersionInfo()->version . CloudAPI::getVersionInfo()->identifier . ")");
                         } else {
-                            $sender->sendMessage(CloudBridge::getPrefix() . "THE BEDROCKCLOUD IS RUNNING ON VERSION (" . CloudAPI::getVersionInfo()->version . CloudAPI::getVersionInfo()->identifier . ")");
+                            $sender->sendMessage(CloudBridge::getPrefix() . "THE CLOUD IS RUNNING ON VERSION (" . CloudAPI::getVersionInfo()->version . CloudAPI::getVersionInfo()->identifier . ")");
                         }
                     } elseif ($args[0] == "save") {
                         Server::getInstance()->getCommandMap()->dispatch($sender, "save-all");
