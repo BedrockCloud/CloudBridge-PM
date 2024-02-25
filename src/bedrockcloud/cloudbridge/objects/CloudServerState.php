@@ -11,17 +11,12 @@ class CloudServerState
     public const FULL = 2;
 
     public static function intToString(int $int): string{
-        if ($int === self::NOT_REGISTERED){
-            return "§cNOT REGISTERED";
-        } elseif($int === self::LOBBY){
-            return "§aLobby";
-        } elseif($int === self::INGAME){
-            return "§cIngame";
-        } elseif($int === self::FULL){
-            return "§6Full";
-        } else {
-            return "§cNOT REGISTERED";
-        }
+        return match ($int) {
+            self::LOBBY => "§aLobby",
+            self::INGAME => "§cIngame",
+            self::FULL => "§6Full",
+            default => "§cNOT REGISTERED",
+        };
     }
 
 }
