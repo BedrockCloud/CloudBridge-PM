@@ -11,6 +11,7 @@ use bedrockcloud\cloudbridge\network\packet\PlayerMessagePacket;
 use bedrockcloud\cloudbridge\network\packet\PlayerMovePacket;
 use bedrockcloud\cloudbridge\network\packet\proxy\ProxyPlayerJoinPacket;
 use bedrockcloud\cloudbridge\network\packet\proxy\ProxyPlayerQuitPacket;
+use bedrockcloud\cloudbridge\network\packet\request\CheckPlayerMaintenanceRequestPacket;
 use bedrockcloud\cloudbridge\network\packet\request\CloudPlayerInfoRequestPacket;
 use bedrockcloud\cloudbridge\network\packet\request\CloudServerInfoRequestPacket;
 use bedrockcloud\cloudbridge\network\packet\request\ListCloudPlayersRequestPacket;
@@ -20,6 +21,7 @@ use bedrockcloud\cloudbridge\network\packet\request\SaveServerRequestPacket;
 use bedrockcloud\cloudbridge\network\packet\request\ServerStartRequestPacket;
 use bedrockcloud\cloudbridge\network\packet\request\ServerStopRequestPacket;
 use bedrockcloud\cloudbridge\network\packet\request\TemplateInfoRequestPacket;
+use bedrockcloud\cloudbridge\network\packet\response\CheckPlayerMaintenanceResponsePacket;
 use bedrockcloud\cloudbridge\network\packet\response\CloudPlayerInfoResponsePacket;
 use bedrockcloud\cloudbridge\network\packet\response\CloudServerInfoResponsePacket;
 use bedrockcloud\cloudbridge\network\packet\response\ListCloudPlayersResponsePacket;
@@ -30,6 +32,7 @@ use bedrockcloud\cloudbridge\network\packet\response\ServerStartResponsePacket;
 use bedrockcloud\cloudbridge\network\packet\response\ServerStopResponsePacket;
 use bedrockcloud\cloudbridge\network\packet\response\TemplateInfoResponsePacket;
 use bedrockcloud\cloudbridge\network\packet\SendToHubPacket;
+use bedrockcloud\cloudbridge\network\packet\TemplateUpdatePacket;
 use bedrockcloud\cloudbridge\network\packet\VersionInfoPacket;
 
 class PacketRegistry {
@@ -65,7 +68,10 @@ class PacketRegistry {
             ServerStartResponsePacket::class,
             ServerStopResponsePacket::class,
             SaveServerRequestPacket::class,
-            SaveServerResponsePacket::class
+            SaveServerResponsePacket::class,
+            CheckPlayerMaintenanceRequestPacket::class,
+            CheckPlayerMaintenanceResponsePacket::class,
+            TemplateUpdatePacket::class,
         ];
 
         foreach ($packets as $packet) {

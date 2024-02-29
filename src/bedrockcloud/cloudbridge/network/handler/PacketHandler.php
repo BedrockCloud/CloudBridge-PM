@@ -10,7 +10,7 @@ use bedrockcloud\cloudbridge\network\RequestPacket;
 class PacketHandler
 {
 
-    private static $registeredPackets = [];
+    private static array $registeredPackets = [];
 
     /**
      * @param string $packetName
@@ -25,7 +25,7 @@ class PacketHandler
      * @param string $packetName
      * @param string $packet
      */
-    public static function registerPacket(string $packetName, string $packet)
+    public static function registerPacket(string $packetName, string $packet): void
     {
         self::$registeredPackets[$packetName] = $packet;
 
@@ -48,7 +48,8 @@ class PacketHandler
         unset(self::$registeredPackets[$packetName]);
     }
 
-    public static function handleCloudPacket(string $packetBuffer){
+    public static function handleCloudPacket(string $packetBuffer): void
+    {
         $data = json_decode($packetBuffer, true);
         if (empty($data["packetName"]) || !self::isRegistered($data["packetName"]) || is_null($data)) return;
         $packet = self::getPacketClassByName($data["packetName"]);

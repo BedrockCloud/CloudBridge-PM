@@ -19,6 +19,7 @@ class ServerInfoCommand extends Command
 
     public function execute(CommandSender $sender, string $commandLabel, array $args)
     {
+        if (!$this->testPermission($sender)) return;
         if (!isset($args[0])) {
             $sender->sendMessage(
                 "§7---------------§r" . PHP_EOL .

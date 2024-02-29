@@ -22,8 +22,6 @@ use bedrockcloud\cloudbridge\network\packet\response\ServerStartResponsePacket;
 use bedrockcloud\cloudbridge\network\packet\response\ServerStopResponsePacket;
 use bedrockcloud\cloudbridge\network\packet\response\StartTemplateResponsePacket;
 use bedrockcloud\cloudbridge\network\packet\response\StopTemplateResponsePacket;
-use bedrockcloud\cloudbridge\network\packet\StartGroupPacket;
-use bedrockcloud\cloudbridge\network\packet\StopGroupPacket;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\player\Player;
@@ -84,7 +82,7 @@ class CloudCommand extends Command
                                         if ($dataPacket instanceof StartTemplateResponsePacket) {
                                             if ($dataPacket->isSuccess()) {
                                                 $template = $dataPacket->getTemplate()[0];
-                                                $sender->sendMessage(CloudBridge::getPrefix() . "§aThe template §e{$template} §awas started succesfully§7.");
+                                                $sender->sendMessage(CloudBridge::getPrefix() . "§aThe template §e{$template} §awas started successfully§7.");
                                             } else {
                                                 if ($dataPacket->getFailureId() === $pk::FAILURE_TEMPLATE_EXISTENCE) {
                                                     $sender->sendMessage(CloudBridge::getPrefix() . "§cThis template don't exists.");
@@ -126,7 +124,7 @@ class CloudCommand extends Command
                                     if ($dataPacket instanceof StopTemplateResponsePacket) {
                                         if ($dataPacket->isSuccess()) {
                                             $template = $dataPacket->getTemplateName();
-                                            $sender->sendMessage(CloudBridge::getPrefix() . "§aThe template §e{$template} §awas stopped succesfully§7.");
+                                            $sender->sendMessage(CloudBridge::getPrefix() . "§aThe template §e{$template} §awas stopped successfully§7.");
                                         } else {
                                             if ($dataPacket->getFailureId() === $pk::FAILURE_TEMPLATE_EXISTENCE) {
                                                 $sender->sendMessage(CloudBridge::getPrefix() . "§cThis template don't exists.");
@@ -188,9 +186,9 @@ class CloudCommand extends Command
                         }
                     } elseif ($args[0] == "version") {
                         if (CloudAPI::getVersionInfo()->identifier === "@Beta") {
-                            $sender->sendMessage(CloudBridge::getPrefix() . "THE BEDROCKCLOUD IS RUNNING ON AN UNSTABLE VERSION (" . CloudAPI::getVersionInfo()->version . CloudAPI::getVersionInfo()->identifier . ")");
+                            $sender->sendMessage(CloudBridge::getPrefix() . "THE CLOUD IS RUNNING ON AN UNSTABLE VERSION (" . CloudAPI::getVersionInfo()->version . CloudAPI::getVersionInfo()->identifier . ")");
                         } else {
-                            $sender->sendMessage(CloudBridge::getPrefix() . "THE BEDROCKCLOUD IS RUNNING ON VERSION (" . CloudAPI::getVersionInfo()->version . CloudAPI::getVersionInfo()->identifier . ")");
+                            $sender->sendMessage(CloudBridge::getPrefix() . "THE CLOUD IS RUNNING ON VERSION (" . CloudAPI::getVersionInfo()->version . CloudAPI::getVersionInfo()->identifier . ")");
                         }
                     } elseif ($args[0] == "save") {
                         Server::getInstance()->getCommandMap()->dispatch($sender, "save-all");
@@ -215,7 +213,7 @@ class CloudCommand extends Command
                     $sender->sendMessage($helpMessage);
                 }
             } else {
-                $sender->sendMessage("§cNo Perms");
+                $sender->sendMessage("§cYou don't have enough permissions to execute this command.");
             }
         }
     }
