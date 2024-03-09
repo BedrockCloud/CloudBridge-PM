@@ -16,11 +16,6 @@ class TemplateUpdatePacket extends DataPacket {
     private bool $isStatic;
     private int $type;
 
-    public function getPacketName(): string
-    {
-        return "TemplateUpdatePacket";
-    }
-
     public function handle()
     {
         $this->templateName = (string)$this->data["templateName"];

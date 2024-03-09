@@ -4,15 +4,9 @@ namespace bedrockcloud\cloudbridge\network\packet\response;
 
 use bedrockcloud\cloudbridge\network\RequestPacket;
 
-class ListServerResponsePacket extends RequestPacket
-{
+class ListServerResponsePacket extends RequestPacket {
 
     public array $servers = [];
-
-    public function getPacketName(): string
-    {
-        return "ListServerResponsePacket";
-    }
 
     public function handle()
     {

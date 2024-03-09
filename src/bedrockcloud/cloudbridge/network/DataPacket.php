@@ -50,7 +50,8 @@ class DataPacket
      * @return false|string
      */
     public function encode() {
-        $this->addValue("packetName", $this->getPacketName());
+        $reflection = new \ReflectionClass($this);
+        $this->addValue("packetName", $reflection->getShortName());
         return json_encode($this->data);
     }
 

@@ -13,13 +13,7 @@ class UpdateGameServerInfoPacket extends DataPacket
     public int $TYPE_UPDATE_PLAYER_COUNT = 0;
     public int $TYPE_UPDATE_STATE_MODE = 1;
 
-
-    public function getPacketName(): string
-    {
-       return "UpdateGameServerInfoPacket";
-    }
-
-    public function encode()
+    public function encode(): bool|string
     {
         $this->addValue("packetName", $this->getPacketName());
         $this->addValue("type",$this->type);

@@ -9,11 +9,6 @@ class ServerStartResponsePacket extends RequestPacket {
     private int $failureId = -1;
     private array $servers = [];
 
-    public function getPacketName(): string
-    {
-        return "ServerStartResponsePacket";
-    }
-
     public function handle()
     {
         $this->success = (bool)$this->data["success"];

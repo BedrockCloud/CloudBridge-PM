@@ -8,14 +8,8 @@ class CloudServerInfoRequestPacket extends RequestPacket {
 
     public ?string $server = null;
 
-    public function getPacketName(): string
+    public function encode(): bool|string
     {
-        return "CloudServerInfoRequestPacket";
-    }
-
-    public function encode()
-    {
-        $this->addValue("packetName", $this->getPacketName());
         if($this->server !== null) {
             $this->addValue("serverInfoName", $this->server);
         }

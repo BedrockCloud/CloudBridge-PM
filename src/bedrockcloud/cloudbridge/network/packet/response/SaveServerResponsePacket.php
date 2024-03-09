@@ -8,11 +8,6 @@ class SaveServerResponsePacket extends RequestPacket {
     private bool $success = false;
     private int $failureId = -1;
 
-    public function getPacketName(): string
-    {
-        return "SaveServerResponsePacket";
-    }
-
     public function handle()
     {
         $this->success = $this->data["success"];

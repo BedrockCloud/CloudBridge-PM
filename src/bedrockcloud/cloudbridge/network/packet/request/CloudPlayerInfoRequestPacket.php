@@ -13,9 +13,8 @@ class CloudPlayerInfoRequestPacket extends RequestPacket {
         return "CloudPlayerInfoRequestPacket";
     }
 
-    public function encode()
+    public function encode(): bool|string
     {
-        $this->addValue("packetName", $this->getPacketName());
         if($this->player !== null) {
             $this->addValue("playerInfoName", $this->player);
         }

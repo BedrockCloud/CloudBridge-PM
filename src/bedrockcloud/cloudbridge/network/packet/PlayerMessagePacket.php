@@ -4,17 +4,12 @@ namespace bedrockcloud\cloudbridge\network\packet;
 
 use bedrockcloud\cloudbridge\network\DataPacket;
 
-class PlayerMessagePacket extends DataPacket
-{
-	public $playerName;
-	public $value;
+class PlayerMessagePacket extends DataPacket {
+	public string $playerName;
+	public string $value;
 
-	public function getPacketName(): string
-	{
-		return "PlayerMessagePacket";
-	}
-
-	public function encode() {
+	public function encode(): bool|string
+    {
         $this->addValue("packetName", $this->getPacketName());
 		$this->addValue("playerName", $this->playerName);
         $this->addValue("value", $this->value);

@@ -6,13 +6,7 @@ namespace bedrockcloud\cloudbridge\network\packet\proxy;
 use bedrockcloud\cloudbridge\listener\cloud\ProxyPlayerQuitEvent;
 use bedrockcloud\cloudbridge\network\DataPacket;
 
-class ProxyPlayerQuitPacket extends DataPacket
-{
-
-    public function getPacketName(): string
-    {
-        return "ProxyPlayerQuitPacket";
-    }
+class ProxyPlayerQuitPacket extends DataPacket {
 
     public function handle()
     {

@@ -4,8 +4,7 @@ namespace bedrockcloud\cloudbridge\network\packet\response;
 
 use bedrockcloud\cloudbridge\network\RequestPacket;
 
-class TemplateInfoResponsePacket extends RequestPacket
-{
+class TemplateInfoResponsePacket extends RequestPacket {
     private string $templateName;
     private bool $isLobby;
     private bool $isBeta;
@@ -13,11 +12,6 @@ class TemplateInfoResponsePacket extends RequestPacket
     private int $maxPlayer;
     private bool $isStatic;
     private int $type;
-
-    public function getPacketName(): string
-    {
-        return "CloudServerInfoResponsePacket";
-    }
 
     public function handle()
     {

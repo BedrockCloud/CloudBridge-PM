@@ -8,11 +8,6 @@ class CheckPlayerMaintenanceResponsePacket extends RequestPacket {
     private bool $success;
     private string $name;
 
-    public function getPacketName(): string
-    {
-        return "CheckPlayerMaintenanceResponsePacket";
-    }
-
     public function handle()
     {
         $this->success = $this->data["success"];
