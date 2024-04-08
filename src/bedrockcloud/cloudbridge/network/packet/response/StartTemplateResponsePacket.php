@@ -9,7 +9,7 @@ class StartTemplateResponsePacket extends RequestPacket {
     private int $failureId = -1;
     private array $template = [];
 
-    public function handle()
+    public function handle(): void
     {
         $this->success = $this->data["success"];
         if (!$this->success) {

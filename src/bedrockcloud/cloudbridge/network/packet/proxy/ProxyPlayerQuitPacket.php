@@ -8,7 +8,7 @@ use bedrockcloud\cloudbridge\network\DataPacket;
 
 class ProxyPlayerQuitPacket extends DataPacket {
 
-    public function handle()
+    public function handle(): void
     {
         $ev = new ProxyPlayerQuitEvent($this->data["playerName"]);
         $ev->call();

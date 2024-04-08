@@ -9,7 +9,7 @@ class ServerStopResponsePacket extends RequestPacket {
     private int $failureId = -1;
     private ?string $serverInfoName = null;
 
-    public function handle()
+    public function handle(): void
     {
         $this->success = $this->data["success"];
         if (!$this->success) {

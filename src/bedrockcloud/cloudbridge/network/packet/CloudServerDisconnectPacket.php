@@ -18,7 +18,7 @@ class CloudServerDisconnectPacket extends DataPacket {
         return parent::encode();
     }
 
-    public function handle()
+    public function handle(): void
     {
         CloudBridge::getInstance()->getLogger()->notice($this->getPacketName());
         Server::getInstance()->shutdown();

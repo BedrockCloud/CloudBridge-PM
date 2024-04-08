@@ -12,7 +12,7 @@ class CloudPlayerInfoResponsePacket extends RequestPacket {
     private string $currentProxy;
     private string $xuid;
 
-    public function handle()
+    public function handle(): void
     {
         $this->success = $this->data["success"];
         if ($this->success){

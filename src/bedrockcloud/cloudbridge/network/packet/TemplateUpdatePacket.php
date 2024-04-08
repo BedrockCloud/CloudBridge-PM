@@ -16,7 +16,7 @@ class TemplateUpdatePacket extends DataPacket {
     private bool $isStatic;
     private int $type;
 
-    public function handle()
+    public function handle(): void
     {
         $this->templateName = (string)$this->data["templateName"];
         $this->isLobby = (bool)$this->data["isLobby"];

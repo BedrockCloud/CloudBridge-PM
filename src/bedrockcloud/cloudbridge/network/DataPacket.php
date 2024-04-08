@@ -32,7 +32,7 @@ class DataPacket
      * @param string $key
      * @param string $value
      */
-    public function addValue(string $key, string $value)
+    public function addValue(string $key, string $value): void
     {
         $this->data[$key] = $value;
     }
@@ -41,7 +41,16 @@ class DataPacket
      * @param string $key
      * @param int $value
      */
-    public function addIntValue(string $key, int $value)
+    public function addIntValue(string $key, int $value): void
+    {
+        $this->data[$key] = $value;
+    }
+
+    /**
+     * @param string $key
+     * @param array $value
+     */
+    public function addArrayValue(string $key, array $value): void
     {
         $this->data[$key] = $value;
     }
@@ -49,7 +58,8 @@ class DataPacket
     /**
      * @return false|string
      */
-    public function encode() {
+    public function encode(): bool|string
+    {
         $reflection = new \ReflectionClass($this);
         $this->addValue("packetName", $reflection->getShortName());
         return json_encode($this->data);
@@ -59,7 +69,8 @@ class DataPacket
      * @param string $data
      * @return array
      */
-    public function decode(string $data) {
+    public function decode(string $data): array
+    {
         return json_decode($data);
     }
 
@@ -71,11 +82,11 @@ class DataPacket
         return CloudBridge::getInstance()->getServer()->getMotd();
     }
 
-    public function sendPacket()
+    public function sendPacket(): void
     {
         CloudBridge::getRequestHandler()->write($this->encode());
     }
 
-    public function handle(){}
+    public function handle(): void{}
 
 }

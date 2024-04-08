@@ -7,7 +7,7 @@ use bedrockcloud\cloudbridge\network\DataPacket;
 
 class ProxyPlayerJoinPacket extends DataPacket {
 
-    public function handle()
+    public function handle(): void
     {
         $ev = new ProxyPlayerJoinEvent($this->data["playerName"]);
         $ev->call();

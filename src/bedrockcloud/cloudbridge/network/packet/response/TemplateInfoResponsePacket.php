@@ -13,7 +13,7 @@ class TemplateInfoResponsePacket extends RequestPacket {
     private bool $isStatic;
     private int $type;
 
-    public function handle()
+    public function handle(): void
     {
         $this->templateName = $this->data["templateName"];
         $this->isLobby = $this->data["isLobby"];

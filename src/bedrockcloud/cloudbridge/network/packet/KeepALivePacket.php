@@ -7,7 +7,7 @@ use bedrockcloud\cloudbridge\network\DataPacket;
 
 class KeepALivePacket extends DataPacket {
 
-    public function handle()
+    public function handle(): void
     {
         CloudBridge::getInstance()->lastKeepALiveCheck = time();
 

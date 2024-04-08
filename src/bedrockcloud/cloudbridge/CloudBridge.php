@@ -71,9 +71,7 @@ class CloudBridge extends PluginBase{
 
         self::$versionInfo = new VersionInfo("Cloud", "[]", "0.0.0", "NOT FOUND");
 
-        try {
-            PacketRegistry::registerPackets();
-        } catch (ReflectionException $ignored) {}
+        PacketRegistry::registerPackets();
 
         $this->getServer()->getPluginManager()->registerEvents(new PlayerJoinListener(), $this);
         $this->getServer()->getPluginManager()->registerEvents(new PlayerQuitListener(), $this);
