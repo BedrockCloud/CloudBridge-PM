@@ -42,7 +42,6 @@ class CloudBridge extends PluginBase{
     public static ?Config $config;
 
     public static array $requests = [];
-    public array $queue = [];
 
     /** @var CloudServer[] */
     public static array $cloudServer = [];
