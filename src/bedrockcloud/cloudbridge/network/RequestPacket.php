@@ -10,7 +10,7 @@ class RequestPacket extends DataPacket
 
     private $requestId = "null";
 
-    public function encode()
+    public function encode(): bool|string
     {
         $this->addValue("requestId", $this->requestId);
         return parent::encode();
