@@ -3,9 +3,11 @@
 namespace bedrockcloud\cloudbridge\api;
 
 use bedrockcloud\cloudbridge\CloudBridge;
+use bedrockcloud\cloudbridge\network\packet\SendToHubPacket;
 use bedrockcloud\cloudbridge\objects\CloudTemplate;
 use bedrockcloud\cloudbridge\objects\CloudServer;
 use bedrockcloud\cloudbridge\objects\VersionInfo;
+use pocketmine\player\Player;
 use pocketmine\Server;
 use pocketmine\utils\Config;
 use pocketmine\utils\SingletonTrait;
@@ -83,5 +85,19 @@ class CloudAPI {
      */
     public function getCloudTemplates(): array{
         return CloudBridge::$cloudTemplates;
+    }
+
+    /**
+     * @param Player $player
+     * @return bool
+     */
+    public function sendToLobby(Player $player): bool{
+        if (!$this->getCurrentServer()->getTemplate()->getIsLobby()) {
+            $pk = new SendToHubPacket();
+            $pk->addValue("playerName", $player->getName());
+            $pk->sendPacket();
+            return true;
+        }
+        return false;
     }
 }

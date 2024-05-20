@@ -14,7 +14,7 @@ class VersionInfoPacket extends DataPacket
     public string $version;
     public string $identifier;
 
-    public function handle()
+    public function handle(): void
     {
         $this->name = $this->data["name"];
         $this->author = $this->data["author"];

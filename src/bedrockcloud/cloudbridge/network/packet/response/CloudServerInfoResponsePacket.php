@@ -4,8 +4,7 @@ namespace bedrockcloud\cloudbridge\network\packet\response;
 
 use bedrockcloud\cloudbridge\network\RequestPacket;
 
-class CloudServerInfoResponsePacket extends RequestPacket
-{
+class CloudServerInfoResponsePacket extends RequestPacket {
 
     private string $serverInfoName;
     private string $templateName;
@@ -16,14 +15,10 @@ class CloudServerInfoResponsePacket extends RequestPacket
     private bool $isStatic;
     private int $playerCount;
     private int $maxPlayer;
-    public array $players = [];
+    private array $players = [];
+    private array $customServerData = [];
 
-    public function getPacketName(): string
-    {
-        return "CloudServerInfoResponsePacket";
-    }
-
-    public function handle()
+    public function handle(): void
     {
         $this->serverInfoName = $this->data["serverInfoName"];
         $this->templateName = $this->data["templateName"];
@@ -35,6 +30,7 @@ class CloudServerInfoResponsePacket extends RequestPacket
         $this->playerCount = $this->data["playerCount"];
         $this->players = json_decode($this->data["players"], true);
         $this->maxPlayer = $this->data["maxPlayer"];
+        $this->customServerData = $this->data["customServerData"];
     }
 
     /**
@@ -115,5 +111,13 @@ class CloudServerInfoResponsePacket extends RequestPacket
     public function isStatic(): bool
     {
         return $this->isStatic;
+    }
+
+    /**
+     * @return array
+     */
+    public function getCustomServerData(): array
+    {
+        return $this->customServerData;
     }
 }

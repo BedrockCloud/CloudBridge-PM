@@ -8,14 +8,8 @@ class CheckPlayerMaintenanceRequestPacket extends RequestPacket {
 
     public ?string $player = null;
 
-    public function getPacketName(): string
+    public function encode(): bool|string
     {
-        return "CheckPlayerMaintenanceRequestPacket";
-    }
-
-    public function encode()
-    {
-        $this->addValue("packetName", $this->getPacketName());
         if($this->player !== null) {
             $this->addValue("playerInfoName", $this->player);
         }

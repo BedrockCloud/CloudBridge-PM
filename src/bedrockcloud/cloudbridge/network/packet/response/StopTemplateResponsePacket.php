@@ -9,12 +9,7 @@ class StopTemplateResponsePacket extends RequestPacket {
     private int $failureId = -1;
     private ?string $templateName = null;
 
-    public function getPacketName(): string
-    {
-        return "StopTemplateResponsePacket";
-    }
-
-    public function handle()
+    public function handle(): void
     {
         $this->success = $this->data["success"];
         if (!$this->success) {

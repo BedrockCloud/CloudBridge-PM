@@ -55,12 +55,14 @@ class Utils{
                                                     $cloudServer = new CloudServer($dataPacket->getServerInfoName(), $template);
                                                     $cloudServer->setPlayerCount($dataPacket->getPlayerCount());
                                                     $cloudServer->setServerState($dataPacket->getState());
+                                                    $cloudServer->setCustomServerData($dataPacket->getCustomServerData());
                                                     if (!isset(CloudBridge::$cloudServer[$name])) {
                                                         CloudBridge::$cloudServer[$name] = $cloudServer;
                                                     } elseif (isset(CloudBridge::$cloudServer[$name])) {
                                                         $cloudServer = CloudBridge::$cloudServer[$name];
                                                         $cloudServer->setPlayerCount($dataPacket->getPlayerCount());
                                                         $cloudServer->setServerState($dataPacket->getState());
+                                                        $cloudServer->setCustomServerData($dataPacket->getCustomServerData());
                                                     }
                                                 }
 

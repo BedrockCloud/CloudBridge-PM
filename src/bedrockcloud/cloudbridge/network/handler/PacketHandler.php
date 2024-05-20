@@ -27,8 +27,7 @@ class PacketHandler
      */
     public static function registerPacket(string $packetName, string $packet): void
     {
-        self::$registeredPackets[$packetName] = $packet;
-
+        if (!self::isRegistered($packetName)) self::$registeredPackets[$packetName] = $packet;
     }
 
     /**

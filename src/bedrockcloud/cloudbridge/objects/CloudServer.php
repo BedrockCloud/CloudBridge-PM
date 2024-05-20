@@ -17,6 +17,7 @@ class CloudServer
     private bool $isMaintenance;
     private bool $isBeta;
     private bool $isStatic;
+    private array $customServerData;
 
     public function __construct(String $name, CloudTemplate $cloudTemplate)
     {
@@ -27,6 +28,7 @@ class CloudServer
         $this->isBeta = $cloudTemplate->isBeta();
         $this->playerCount = 0;
         $this->isStatic = $cloudTemplate->isStatic();
+        $this->customServerData = [];
     }
 
     public function getName(): string
@@ -119,5 +121,21 @@ class CloudServer
     public function isStatic(): bool
     {
         return $this->isStatic;
+    }
+
+    /**
+     * @return array
+     */
+    public function getCustomServerData(): array
+    {
+        return $this->customServerData;
+    }
+
+    /**
+     * @param array $customServerData
+     */
+    public function setCustomServerData(array $customServerData): void
+    {
+        $this->customServerData = $customServerData;
     }
 }
